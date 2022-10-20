@@ -1,0 +1,32 @@
+{
+  "APP_NAME": {
+    "en": "Contacts App",
+    "es": "Contacts App",
+    "ca": "Contacts App"
+  },
+  "ADD_NEW": {
+    "en": "Add contact",
+    "es": "Añadir contacto",
+    "ca": "Afegir contacte"
+  },
+  "LOG_OUT": {
+    "en": "Log out",
+    "es": "Cerrar sesión",
+    "ca": "Tancar sessió"
+  },
+  "LOG_IN": {
+    "en": "Log in",
+    "es": "Iniciar sesión",
+    "ca": "Iniciar sessió"
+  },
+  "EDIT": {
+    "en": "Edit",
+    "es": "Editar",
+    "ca": "Editar"
+  },
+  "DELETE": {
+    "en": "Delete",
+    "es": "Eliminar",
+    "ca": "Eliminar"
+  }
+}

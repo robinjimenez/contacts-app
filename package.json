@@ -1,0 +1,15 @@
+{
+  "name": "contacts-app",
+  "version": "0.1.0",
+  "description": "A fullstack React & NodeJS based app to store your contacts",
+  "author": "Robin Jiménez <robin@robinjnewman.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "concurrently \"cd contacts-server && yarn start\" \"cd contacts-client && yarn start\"",
+    "server": "cd contacts-server && yarn start",
+    "client": "cd contacts-client && yarn start"
+  },
+  "dependencies": {
+    "concurrently": "^7.4.0"
+  }
+}
