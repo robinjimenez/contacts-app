@@ -5,7 +5,7 @@
   "author": "Robin Jiménez <robin@robinjnewman.com>",
   "license": "MIT",
   "scripts": {
-    "start": "concurrently \"cd contacts-server && yarn start\" \"cd contacts-client && yarn start\"",
+    "start-dev": "concurrently \"cd contacts-server && yarn dev\" \"cd contacts-client && yarn start\"",
     "server": "cd contacts-server && yarn start",
     "client": "cd contacts-client && yarn start"
   },

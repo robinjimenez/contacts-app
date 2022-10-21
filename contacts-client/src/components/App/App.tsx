@@ -12,6 +12,8 @@ const App: FC = () => {
   useEffect(() => {
     // Fetch literals
     setLiterals()
+    // API Test
+    // fetch('/api').then(async response => await response.json()).then(data => console.log(data))
   }, [])
 
   return (
