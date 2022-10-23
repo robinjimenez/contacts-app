@@ -1,11 +1,13 @@
+import { Types } from "mongoose"
+
 export type Contact = {
-  _id: string
   firstName: string
   lastName: string
   email: string
   phoneNumber: number
   contactEdits?: ContactEdit[]
-  creationDate: Date
+  creationDate: Date,
+  owner?: string
 }
 
 export type ContactEdit = {

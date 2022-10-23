@@ -24,9 +24,34 @@
     "es": "Editar",
     "ca": "Editar"
   },
+  "SAVE": {
+    "en": "Save",
+    "es": "Guardar",
+    "ca": "Desar"
+  },
   "DELETE": {
     "en": "Delete",
     "es": "Eliminar",
     "ca": "Eliminar"
+  },
+  "SELECT_CONTACT": {
+    "en": "Select a contact or add a new one.",
+    "es": "Selecciona un contacto o añade uno nuevo.",
+    "ca": "Selecciona un contacte o afegeix-ne un de nou."
+  },
+  "FIRSTNAME": {
+    "en": "First name",
+    "es": "Nombre",
+    "ca": "Nom"
+  },
+  "LASTNAME": {
+    "en": "Last name",
+    "es": "Apellido(s)",
+    "ca": "Cognom(s)"
+  },
+  "EMAIL": {
+    "en": "Email",
+    "es": "Correo electrónico",
+    "ca": "Correu electrònic"
   }
 }

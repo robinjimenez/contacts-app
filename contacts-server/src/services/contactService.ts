@@ -1,9 +1,12 @@
-//const { contactDb } = require('../db')
+import { Types } from "mongoose"
+import { addContactQuery, deleteContactQuery, getUserContactsQuery } from "../models"
+import { Contact, User } from "../types"
 
-const createContact = async (user, contact) => {
+const createContact = async (user: User & { _id: Types.ObjectId }, contact: Contact) => {
   try {
-    return //await contactDb(user, content)
-  } catch(e) {
+    contact.owner = user._id.toString()
+    return await addContactQuery(contact)
+  } catch(e: any) {
     throw new Error(e.message)
   }
 }
@@ -11,15 +14,15 @@ const createContact = async (user, contact) => {
 const editContact = async (user, contact) => {
   try {
     return //await contactDb(user, content)
-  } catch(e) {
+  } catch(e: any) {
     throw new Error(e.message)
   }
 }
 
-const deleteContact = async (user, contact) => {
+const deleteContact = async (user: User, id: string) => {
   try {
-    return //await contactDb(user, content)
-  } catch(e) {
+    return await deleteContactQuery(user, id)
+  } catch(e: any) {
     throw new Error(e.message)
   }
 }
@@ -27,15 +30,18 @@ const deleteContact = async (user, contact) => {
 const getContact = async (user, id) => {
   try {
     return //await contactDb(user, id)
-  } catch(e) {
+  } catch(e: any) {
     throw new Error(e.message)
   }
 }
 
-const getAllUserContacts = async (user) => {
+const getAllUserContacts = async (id: string) => {
   try {
-    return //await contactDb(user)
-  } catch(e) {
+    
+    const res =  await getUserContactsQuery(id)
+    console.log("🚀 ~ file: contactService.ts  line 42 ~ getAllUserContacts ~ res", res)
+    return res
+  } catch(e: any) {
     throw new Error(e.message)
   }
 }

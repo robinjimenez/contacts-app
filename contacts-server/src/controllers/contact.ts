@@ -51,10 +51,10 @@ const getContact = async (req, res, next) => {
 }
 
 const getAllUserContacts = async (req, res, next) => {
-  const {user, contact} = req.body
+  const { id } = req.params
   try {
-    await contactService.getContact(user, contact)
-    res.sendStatus(200)
+    const contacts = await contactService.getAllUserContacts(id)
+    res.status(200).send(contacts)
     next()
   } catch(e) {
     console.log(e.message)

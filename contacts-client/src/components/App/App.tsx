@@ -5,15 +5,29 @@ import ContactList from '../ContactList';
 import Navbar from '../Navbar/Navbar';
 
 const App: FC = () => {
-  const { literals, setLiterals } = useStore(({ literals, setLiterals }) => {
-    return ({ literals, setLiterals })
+  const { literals, setLiterals, setContacts } = useStore(({ literals, setLiterals, setContacts }) => {
+    return ({ literals, setLiterals, setContacts })
   })
 
   useEffect(() => {
     // Fetch literals
-    setLiterals()
+    setLiterals();
     // API Test
-    // fetch('/api').then(async response => await response.json()).then(data => console.log(data))
+
+    (async () => {
+      try {
+        const userRes = await fetch('/api/users')
+        const user = await userRes.json()
+
+        const contactsRes = await fetch('/api/contacts/user/' + user._id)
+        const contacts = await contactsRes.json()
+
+        setContacts(contacts)
+      } catch (err: any) {
+        console.log('Error fetching data: ', err)
+      }
+    })()
+    
   }, [])
 
   return (

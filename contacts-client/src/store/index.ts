@@ -9,11 +9,11 @@ interface storeState {
   selectContact: (id: string) => void;
   literals: Record<string, Literal>;
   setLiterals: () => void;
+  contacts: Contact[];
+  setContacts: (contacts: Contact[]) => void;
+  language: string;
+  setLanguage: (lang: string) => void;
 }
-
-const fetchContact = async (id: string) => {
-  return mockContacts.find((contact) => contact.id === id);
-};
 
 const fetchLiterals = async () => {
   return literals;
@@ -24,13 +24,21 @@ export const useStore = create<storeState>()(
     (set, get) => ({
       selectedContact: null,
       selectContact: async (id) => {
-        const contact = await fetchContact(id);
-        set({selectedContact: await contact});
+        const contact = get().contacts.find(contact => contact._id === id)
+        set({selectedContact: contact});
       },
       literals: {},
       setLiterals: async () => {
         const literals = await fetchLiterals();
         set({literals: await literals});
+      },
+      contacts: [],
+      setContacts: async (contacts: Contact[]) => {
+        set({contacts: contacts});
+      },
+      language: 'en',
+      setLanguage: async (lang: string) => {
+        set({language: lang});
       },
     }),
     {
