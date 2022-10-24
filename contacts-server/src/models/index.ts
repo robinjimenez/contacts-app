@@ -5,7 +5,8 @@ import {
   addContactQuery,
   editContactQuery,
   deleteContactQuery,
-  getUserContactsQuery
+  getUserContactsQuery,
+  getContactByEmailQuery
 } from './contact'
 
 import {
@@ -13,4 +14,4 @@ import {
   getUserQuery
 } from './user'
 
-export { Contact, addContactQuery, editContactQuery, deleteContactQuery, User, addUserQuery, getUserQuery, getUserContactsQuery }
+export { Contact, addContactQuery, editContactQuery, deleteContactQuery, User, addUserQuery, getUserQuery, getUserContactsQuery, getContactByEmailQuery }

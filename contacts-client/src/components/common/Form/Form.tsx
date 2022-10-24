@@ -38,13 +38,15 @@ const Form: FC<Props> = ({ children, handleSubmit }) => {
   const handleFormSubmit = (event: FormEvent) => {
     event.preventDefault()
     setErrors(null)
+
     // Validations
     const errors = validateForm(formData)
     if (Object.entries(errors).length) {
       setErrors(errors)
     }
+
     // Data submit
-    handleSubmit(formData)
+    if (!Object.values(errors).length) handleSubmit(formData)
   }
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {

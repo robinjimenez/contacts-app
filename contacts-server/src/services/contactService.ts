@@ -1,5 +1,5 @@
 import { Types } from "mongoose"
-import { addContactQuery, deleteContactQuery, getUserContactsQuery } from "../models"
+import { addContactQuery, deleteContactQuery, getUserContactsQuery, getContactByEmailQuery } from "../models"
 import { Contact, User } from "../types"
 
 const createContact = async (user: User & { _id: Types.ObjectId }, contact: Contact) => {
@@ -28,9 +28,10 @@ const deleteContact = async (user: User, id: string) => {
   }
 }
 
-const getContact = async (user, id) => {
+const getContactByEmail = async (user: User & { _id: Types.ObjectId }, email: string) => {
   try {
-    return //await contactDb(user, id)
+    const contact = await getContactByEmailQuery(user._id, email)
+    return contact.length > 0 ? contact : false
   } catch(e: any) {
     throw new Error(e.message)
   }
@@ -38,10 +39,7 @@ const getContact = async (user, id) => {
 
 const getAllUserContacts = async (id: string) => {
   try {
-    
-    const res =  await getUserContactsQuery(id)
-    console.log("🚀 ~ file: contactService.ts  line 42 ~ getAllUserContacts ~ res", res)
-    return res
+    return await getUserContactsQuery(id)
   } catch(e: any) {
     throw new Error(e.message)
   }
@@ -51,6 +49,6 @@ export default {
   createContact,
   editContact,
   deleteContact,
-  getContact,
+  getContactByEmail,
   getAllUserContacts,
 }

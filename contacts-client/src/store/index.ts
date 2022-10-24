@@ -1,6 +1,6 @@
 import create from "zustand"
 import { persist } from "zustand/middleware"
-import { Contact, Literal, User } from "~/types"
+import { Contact, ContactMode, Literal, User } from "~/types"
 import literals from "../data/literals.json"
 
 interface storeState {
@@ -15,8 +15,8 @@ interface storeState {
   setUser: (user: User) => void
   language: string
   setLanguage: (lang: string) => void
-  contactMode: "VIEW" | "CREATE"
-  setContactMode: (mode: "VIEW" | "CREATE") => void
+  contactMode: ContactMode
+  setContactMode: (mode: ContactMode) => void
 }
 
 const fetchLiterals = async () => {
@@ -55,7 +55,7 @@ export const useStore = create<storeState>()(
         set({ language: lang })
       },
       contactMode: "VIEW",
-      setContactMode: (mode: "VIEW" | "CREATE") => {
+      setContactMode: (mode: ContactMode) => {
         set({ contactMode: mode })
       },
     }),

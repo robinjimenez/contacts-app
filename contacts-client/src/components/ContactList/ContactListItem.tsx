@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { FC, MouseEvent } from "react"
 import { useStore } from "../../store"
 import { Contact } from "~/types"
 
@@ -15,7 +15,8 @@ const ContactListItem: FC<Props> = ({ contact }) => {
     })
   )
 
-  const handleClick = () => {
+  const handleClick = (ev: MouseEvent) => {
+    ev?.stopPropagation()
     if (contactMode === "CREATE") {
       const confirmedExit = confirm("You have unsaved changes. Are you sure you want to leave?")
       confirmedExit ? setContactMode("VIEW") : null

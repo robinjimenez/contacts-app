@@ -1,8 +1,9 @@
-import { FC, useState } from "react"
+import { ChangeEventHandler, FC, useState } from "react"
 import { useStore } from "../../store"
 import ContactEdits from "../ContactEdits"
 import TextButton from "../common/TextButton/TextButton"
 import EditableText from "../common/EditableText/EditableText"
+import Form from "../common/Form/Form"
 
 const EmptyContactDetail: FC = () => {
   const { literals, language } = useStore(({ literals, language }) => ({
@@ -35,6 +36,10 @@ const ContactDetail: FC = () => {
     setEditing(false)
   }
 
+  const handleSubmit = (formData: Record<string, unknown>) => {
+    console.log(formData)
+  }
+
   return contact ? (
     <div className="h-full bg-gray-200 ">
       <div className="flex h-full flex-col items-center justify-center">
@@ -45,48 +50,84 @@ const ContactDetail: FC = () => {
             alt="contact avatar"
           />
         </div>
-        <div className="mb-4 flex flex-col items-center">
-          <EditableText
-            heading
-            name="firstName"
-            label={literals.FIRSTNAME[language]}
-            initialValue={contact.firstName}
-            editable={editing}
-            handleChange={() => null}
-            error={null}
-          />
-          <EditableText
-            heading
-            name="lastName"
-            label={literals.LASTNAME[language]}
-            initialValue={contact.lastName}
-            editable={editing}
-            handleChange={() => null}
-            error={null}
-          />
-        </div>
-        <p className="text-xl">{contact.email}</p>
-        <p className="text-xl">{contact.phoneNumber}</p>
-        <div className="absolute bottom-0 mb-8 grid grid-cols-2 gap-2">
-          {editing ? (
-            <TextButton
-              text={literals.SAVE[language]}
-              uppercase
-              handleClick={handleSaveClick}
-            />
-          ) : (
-            <TextButton
-              text={literals.EDIT[language]}
-              uppercase
-              handleClick={handleEditClick}
-            />
+        <Form handleSubmit={handleSubmit}>
+          {(
+            handleChange: ChangeEventHandler,
+            errors: Record<string, string>
+          ) => (
+            <div className="mb-4 flex flex-col items-center">
+              <div className="w-full">
+                <div className="mb-4">
+                  <EditableText
+                    name="firstName"
+                    heading
+                    label={literals.FIRSTNAME[language]}
+                    initialValue={contact?.firstName}
+                    editable={editing}
+                    required
+                    handleChange={handleChange}
+                    error={errors?.["firstName"] || null}
+                  />
+                  <EditableText
+                    name="lastName"
+                    heading
+                    label={literals.LASTNAME[language]}
+                    initialValue={contact?.lastName}
+                    editable={editing}
+                    required
+                    handleChange={handleChange}
+                    error={errors?.["lastName"] || null}
+                  />
+                </div>
+                <EditableText
+                  name="email"
+                  type="email"
+                  label={literals.EMAIL[language]}
+                  initialValue={contact?.email}
+                  editable={editing}
+
+                  required
+                  handleChange={handleChange}
+                  error={errors?.["email"] || null}
+                />
+                <EditableText
+                  name="phoneNumber"
+                  label={literals.PHONENUMBER[language]}
+                  initialValue={contact?.phoneNumber}
+                  editable={editing}
+                  required
+                  handleChange={handleChange}
+                  error={errors?.["phoneNumber"] || null}
+                />
+              </div>
+              <div className="absolute bottom-0 mb-8 grid grid-cols-2 gap-2">
+                {editing ? (
+                  <TextButton
+                    text={literals.SAVE[language]}
+                    uppercase
+                    variant="PRIMARY"
+                    bold
+                    handleClick={handleSaveClick}
+                  />
+                ) : (
+                  <TextButton
+                    text={literals.EDIT[language]}
+                    uppercase
+                    bold
+                    variant="PRIMARY"
+                    handleClick={handleEditClick}
+                  />
+                )}
+                <TextButton
+                  text={literals.DELETE[language]}
+                  variant="DANGER"
+                  uppercase
+                  bold
+                />
+              </div>
+            </div>
           )}
-          <TextButton
-            text={literals.DELETE[language]}
-            variant="DANGER"
-            uppercase
-          />
-        </div>
+        </Form>
       </div>
 
       <ContactEdits />

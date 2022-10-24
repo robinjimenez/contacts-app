@@ -1,8 +1,8 @@
+import { Types } from "mongoose"
 import { Contact as ContactType, User } from "../types"
 import Contact from "./contact.models"
 
 const getUserContactsQuery = async (id: string) => {
-  console.log("🚀 ~ file: contact.ts ~ line 5 ~ getUserContactsQuery ~ id", id)
   return await Contact.find({ owner: id })
 }
 
@@ -25,9 +25,14 @@ const deleteContactQuery = async (user: User, id: string) => {
   return -1 
 }
 
+const getContactByEmailQuery = async (userId: Types.ObjectId, email: string) => {
+  return await Contact.find({ owner: userId, email: email })
+}
+
 export {
   addContactQuery,
   editContactQuery,
   deleteContactQuery,
-  getUserContactsQuery
+  getUserContactsQuery,
+  getContactByEmailQuery
 }

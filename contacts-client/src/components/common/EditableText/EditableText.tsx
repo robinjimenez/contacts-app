@@ -6,7 +6,7 @@ type Props = {
   label?: string
   type?: string
   required?: boolean
-  initialValue: string
+  initialValue: string | number
   editable?: boolean
   placeholder?: string
   heading?: boolean
@@ -33,7 +33,7 @@ const EditableText: FC<Props> = ({
 
   const textStyle = heading
     ? "font-bold text-4xl leading-10"
-    : "font-normal text-xl leading-10"
+    : "font-normal text-xl leading-normal"
 
   const handleInputChange = (ev: ChangeEvent<HTMLInputElement>) => {
     setValue(ev.currentTarget.value)
@@ -53,7 +53,7 @@ const EditableText: FC<Props> = ({
                 htmlFor={name}
                 className={`whitespace-nowrap border-b ${
                   error !== null ? "border-b-red-500" : "border-b-black"
-                } pb-1 pr-4`}
+                } pb-1 pr-4 `}
               >
                 {label}
               </label>
@@ -62,7 +62,7 @@ const EditableText: FC<Props> = ({
               type={type}
               id={name}
               required={required}
-              className={`${textStyle} flex-grow border-b ${
+              className={`flex-grow border-b text-xl font-normal leading-10 ${
                 error !== null
                   ? "border-b-red-500 text-red-500"
                   : "border-b-black"
@@ -76,7 +76,9 @@ const EditableText: FC<Props> = ({
           ) : null}
         </>
       ) : (
-        <p className={`${textStyle} w-full border-b border-b-transparent`}>
+        <p
+          className={`${textStyle} w-full border-b border-b-transparent text-center`}
+        >
           {initialValue}
         </p>
       )}
