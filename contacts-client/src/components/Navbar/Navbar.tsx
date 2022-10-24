@@ -1,15 +1,24 @@
-import TextButton from "../common/TextButton/TextButton";
+import { useStore } from "../../store"
+import TextButton from "../common/TextButton/TextButton"
 
 const Navbar = () => {
+  const { contactMode, setContactMode } = useStore(
+    ({ contactMode, setContactMode }) => ({ contactMode, setContactMode })
+  )
   return (
-    <div className="border-b border-black flex justify-between items-center p-4">
-      <h1 className="font-bold text-2xl">Contacts App</h1>
-      <div className="grid grid-cols-2 grid-row-1 gap-4">
-        <TextButton text="Add new" variant="PRIMARY" />
+    <div className="flex items-center justify-between border-b border-black p-4">
+      <h1 className="text-2xl font-bold">Contacts App</h1>
+      <div className="grid-row-1 grid grid-cols-2 gap-4">
+        <TextButton
+          text="Add new"
+          handleClick={() => setContactMode("CREATE")}
+          variant="PRIMARY"
+          enabled={contactMode !== "CREATE"}
+        />
         <TextButton text="Log in" />
       </div>
     </div>
-  );
+  )
 }
 
 export default Navbar

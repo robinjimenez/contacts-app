@@ -5,6 +5,7 @@ import { Contact, User } from "../types"
 const createContact = async (user: User & { _id: Types.ObjectId }, contact: Contact) => {
   try {
     contact.owner = user._id.toString()
+    contact.creationDate = new Date()
     return await addContactQuery(contact)
   } catch(e: any) {
     throw new Error(e.message)

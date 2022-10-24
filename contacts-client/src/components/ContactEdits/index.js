@@ -1,2 +1,2 @@
-export * from './ContactEdits';
-export { default } from './ContactEdits';
+export * from "./ContactEdits"
+export { default } from "./ContactEdits"

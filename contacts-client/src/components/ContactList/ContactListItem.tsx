@@ -1,26 +1,45 @@
-import { FC } from "react";
-import { useStore } from "../../store";
-import { Contact } from "~/types";
+import { FC } from "react"
+import { useStore } from "../../store"
+import { Contact } from "~/types"
 
 type Props = {
   contact: Contact
 }
 
 const ContactListItem: FC<Props> = ({ contact }) => {
-  const { selectContact } = useStore(({ selectContact }) => ({ selectContact }))
-  
+  const { selectContact, contactMode, setContactMode } = useStore(
+    ({ selectContact, contactMode, setContactMode }) => ({
+      selectContact,
+      contactMode,
+      setContactMode,
+    })
+  )
+
   const handleClick = () => {
+    if (contactMode === "CREATE") {
+      const confirmedExit = confirm("You have unsaved changes. Are you sure you want to leave?")
+      confirmedExit ? setContactMode("VIEW") : null
+    }
     selectContact(contact._id)
   }
-  
+
   return (
-    <div className="p-4 border-b border-b-gray flex flex-row items-center hover:bg-gray-100 cursor-pointer" onClick={handleClick}>
-      <div className="rounded-full h-10 w-10 bg-gray-200 mr-4 overflow-hidden">
-        <img src='https://www.picsum.photos/100' className="object-cover" alt='contact avatar' />
+    <div
+      className="border-b-gray flex cursor-pointer flex-row items-center border-b p-4 hover:bg-gray-100"
+      onClick={handleClick}
+    >
+      <div className="mr-4 h-10 w-10 overflow-hidden rounded-full bg-gray-200">
+        <img
+          src="https://www.picsum.photos/100"
+          className="object-cover"
+          alt="contact avatar"
+        />
       </div>
-      <p>{contact.firstName} {contact.lastName}</p>
+      <p>
+        {contact.firstName} {contact.lastName}
+      </p>
     </div>
-  );
+  )
 }
 
 export default ContactListItem

@@ -1,2 +1,2 @@
-export * from './ScrollableList';
-export { default } from './ScrollableList';
+export * from "./ScrollableList"
+export { default } from "./ScrollableList"

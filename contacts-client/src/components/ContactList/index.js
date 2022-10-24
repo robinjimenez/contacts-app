@@ -1,2 +1,2 @@
-export * from './ContactList';
-export { default } from './ContactList';
+export * from "./ContactList"
+export { default } from "./ContactList"

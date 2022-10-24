@@ -1,4 +1,4 @@
-import { FC, ReactElement } from "react";
+import { FC, ReactElement } from "react"
 
 type Props = {
   children: ReactElement[]
@@ -7,15 +7,13 @@ type Props = {
 
 const ScrollableList: FC<Props> = ({ children, heading }) => {
   return (
-    <div className="relative overflow-y-auto h-full">
-      <div className='px-4 py-2 bg-white z-10 border-b-black border-b sticky top-0'>
+    <div className="relative h-full overflow-y-auto">
+      <div className="sticky top-0 z-10 border-b border-b-black bg-white px-4 py-2">
         <h2 className="font-bold">{heading}</h2>
       </div>
-      <div className="relative flex flex-col">
-        {children}
-      </div>
+      <div className="relative flex flex-col">{children}</div>
     </div>
   )
 }
 
-export default ScrollableList;
+export default ScrollableList

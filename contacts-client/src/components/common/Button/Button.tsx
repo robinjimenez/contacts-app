@@ -6,29 +6,33 @@ type Props = {
   uppercase?: boolean
   variant?: "PRIMARY" | "DANGER" | "DEFAULT"
   handleClick?: () => void
+  isSubmit: boolean
 }
 
-const TextButton: FC<Props> = ({
+const Button: FC<Props> = ({
   text,
   enabled = true,
   uppercase = false,
   variant = "DEFAULT",
   handleClick = () => null,
+  isSubmit = false,
 }) => {
   return (
     <button
-      type="button"
+      type={isSubmit ? "submit" : "button"}
       disabled={!enabled}
-      className={`${variant === "DANGER" ? "text-red-500" : ""} ${
-        variant === "PRIMARY" ? "text-blue-500" : ""
-      } ${uppercase ? "uppercase" : ""} ${
+      className={`rounded-xl px-4 py-2 text-white ${
+        variant === "DANGER" ? "bg-red-500" : ""
+      } ${variant === "PRIMARY" ? "bg-blue-500" : ""} ${
+        uppercase ? "uppercase" : ""
+      } ${
         enabled ? "cursor-pointer" : "cursor-default opacity-50"
-      }`}
-      onClick={handleClick}
+      } hover:opacity-75`}
+      onClick={handleClick || null}
     >
       {text}
     </button>
   )
 }
 
-export default TextButton
+export default Button

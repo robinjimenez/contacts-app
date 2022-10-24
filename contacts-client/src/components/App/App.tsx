@@ -1,50 +1,49 @@
-import { FC, useEffect } from 'react';
-import { useStore } from '../../store';
-import ContactDetail from '../ContactDetail';
-import ContactList from '../ContactList';
-import Navbar from '../Navbar/Navbar';
+import { FC, useEffect } from "react"
+import { useStore } from "../../store"
+import ContactCreation from "../ContactCreation/ContactCreation"
+import ContactDetail from "../ContactDetail"
+import ContactList from "../ContactList"
+import Navbar from "../Navbar/Navbar"
 
 const App: FC = () => {
-  const { literals, setLiterals, setContacts } = useStore(({ literals, setLiterals, setContacts }) => {
-    return ({ literals, setLiterals, setContacts })
-  })
+  const { setLiterals, fetchContacts, contactMode, setUser } = useStore(
+    ({ setLiterals, fetchContacts, contactMode, setUser }) => {
+      return { setLiterals, fetchContacts, contactMode, setUser }
+    }
+  )
 
   useEffect(() => {
-    // Fetch literals
-    setLiterals();
-    // API Test
-
-    (async () => {
+    ;(async () => {
+      // Fetch literals
+      await setLiterals()
+      // API Test
       try {
-        const userRes = await fetch('/api/users')
+        const userRes = await fetch("/api/users")
         const user = await userRes.json()
+        setUser(user)
 
-        const contactsRes = await fetch('/api/contacts/user/' + user._id)
-        const contacts = await contactsRes.json()
-
-        setContacts(contacts)
+        fetchContacts(user)
       } catch (err: any) {
-        console.log('Error fetching data: ', err)
+        console.log("Error fetching data: ", err)
       }
     })()
-    
   }, [])
 
   return (
-    <div className="relative h-screen max-h-screen w-full flex flex-col">
-      <div className=''>
+    <div className="relative flex h-screen max-h-screen w-full flex-col">
+      <div className="">
         <Navbar />
       </div>
-      <div className='flex-grow relative w-full grid sm:grid-cols-12 grid-rows-[100%] overflow-hidden'>
-        <div className='hidden sm:block sm:col-span-3 max-h-full'>
+      <div className="relative grid w-full flex-grow grid-rows-[100%] overflow-hidden sm:grid-cols-12">
+        <div className="hidden max-h-full sm:col-span-3 sm:block">
           <ContactList />
         </div>
-        <div className='sm:col-span-9 bg-blue-100'>
-          <ContactDetail />
+        <div className="bg-blue-100 sm:col-span-9">
+          {contactMode === "VIEW" ? <ContactDetail /> : <ContactCreation />}
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

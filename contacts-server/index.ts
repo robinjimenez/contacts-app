@@ -11,6 +11,7 @@ dotenv.config()
 const port = process.env.PORT || 3001
 const app = express()
 
+app.use(express.json())
 app.use('/api', router)
 
 app.listen(port, () => {
@@ -30,8 +31,8 @@ app.listen(port, () => {
     if (!defaultUser) throw Error('User could not be found.')
 
     const defaultContact: Contact = {
-      firstName: 'John',
-      lastName: 'Doe',
+      firstName: 'Juan',
+      lastName: 'Do',
       email: 'test@test.com',
       creationDate: new Date(),
       phoneNumber: 123123123,
@@ -40,7 +41,7 @@ app.listen(port, () => {
 
     // Test calls
     // userService.registerUser(defaultUser)
-    contactService.createContact(defaultUser, defaultContact)
+    // contactService.createContact(defaultUser, defaultContact)
     // setTimeout(() =>  contactService.deleteContact(defaultUser, '123'), 1000)
   } catch (err) {
     console.log('Unable to connect to database: ', err)

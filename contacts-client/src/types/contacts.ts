@@ -15,8 +15,8 @@ export type ContactEdit = {
 
 export type ContactDataEdit = {
   field: string
-  previousData: ContactDataFieldType 
+  previousData: ContactDataFieldType
   updatedData: ContactDataFieldType
 }
 
-export type ContactDataFieldType = String | Date | Number
+export type ContactDataFieldType = string | Date | number

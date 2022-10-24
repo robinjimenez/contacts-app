@@ -53,5 +53,40 @@
     "en": "Email",
     "es": "Correo electrónico",
     "ca": "Correu electrònic"
+  },
+  "PHONENUMBER": {
+    "en": "Phone number",
+    "es": "Teléfono",
+    "ca": "Telèfon"
+  },
+  "NO_FIRSTNAME": {
+    "en": "First name is required.",
+    "es": "Nombre es obligartorio.",
+    "ca": "Nom és obligatòri."
+  },
+  "NO_LASTNAME": {
+    "en": "Last name is required.",
+    "es": "Apellido(s) es obligartorio.",
+    "ca": "Cognom(s) és obligatòri."
+  },
+  "INVALID_EMAIL": {
+    "en": "Email is invalid.",
+    "es": "Correo electrónico invalido.",
+    "ca": "Correu electrònic invàlid."
+  },
+  "NO_EMAIL": {
+    "en": "Email is required.",
+    "es": "Correo electrónico es obligartorio.",
+    "ca": "Correu electrònic és obligatòri."
+  },
+  "NO_PHONENUMBER": {
+    "en": "Phone number is required.",
+    "es": "Teléfono es obligartorio.",
+    "ca": "Telèfon és obligatòri."
+  },
+  "INVALID_PHONENUMBER": {
+    "en": "Phone number is invalid.",
+    "es": "Teléfono invalido.",
+    "ca": "Telèfon invàlid."
   }
 }

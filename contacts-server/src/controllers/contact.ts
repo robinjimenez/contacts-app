@@ -4,8 +4,6 @@ const addContact = async (req, res, next) => {
   const {user, contact} = req.body
   try {
     await contactService.createContact(user, contact)
-    // other service call (or same service, different function can go here)
-    // i.e. - await generateBlogpostPreview()
     res.sendStatus(201) // 201 - created
     next()
   } catch(e) {

@@ -1,2 +1,2 @@
-export * from './EditableText';
-export { default } from './EditableText';
+export * from "./EditableText"
+export { default } from "./EditableText"
