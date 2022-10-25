@@ -19,9 +19,18 @@ const addContact = async (req, res, next) => {
 }
 
 const editContact = async (req, res, next) => {
-  const {user, contact} = req.body
+  const {user, updatedContactData} = req.body
+  const { id } = req.params
   try {
-    await contactService.editContact(user, contact)
+    if (updatedContactData.email) {
+      const contactWithEmail = await contactService.getContactByEmail(user, updatedContactData.email)
+      if (contactWithEmail) {
+        res.status(400).send({ message: 'EXISTING_CONTACT_EMAIL' })
+        next()
+        return
+      }
+    }
+    await contactService.editContact(user, id, updatedContactData)
     res.sendStatus(200)
     next()
   } catch(e) {

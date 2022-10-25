@@ -4,6 +4,7 @@ import ContactEdits from "../ContactEdits"
 import TextButton from "../common/TextButton/TextButton"
 import EditableText from "../common/EditableText/EditableText"
 import Form from "../common/Form/Form"
+import Button from "../common/Button/Button"
 
 const EmptyContactDetail: FC = () => {
   const { literals, language } = useStore(({ literals, language }) => ({
@@ -19,25 +20,57 @@ const EmptyContactDetail: FC = () => {
 }
 
 const ContactDetail: FC = () => {
-  const { literals, contact, language } = useStore(
-    ({ selectedContact, literals, language }) => ({
-      contact: selectedContact,
-      literals,
-      language,
-    })
-  )
+  const { selectContact, literals, contact, language, fetchContacts, user } =
+    useStore(
+      ({
+        selectContact,
+        selectedContact,
+        literals,
+        language,
+        fetchContacts,
+        user,
+      }) => ({
+        selectContact,
+        contact: selectedContact,
+        literals,
+        language,
+        fetchContacts,
+        user,
+      })
+    )
   const [editing, setEditing] = useState(false)
 
   const handleEditClick = () => {
     setEditing(true)
   }
 
-  const handleSaveClick = () => {
-    setEditing(false)
-  }
-
   const handleSubmit = (formData: Record<string, unknown>) => {
-    console.log(formData)
+    if (!contact) return
+    const data = {
+      user,
+      updatedContactData: formData,
+    }
+
+    fetch("/api/contacts/" + contact._id, {
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then((res) => {
+      if (res.status === 200) {
+        alert("Contact updated.")
+        if (user) {
+          fetchContacts(user).then(() => {
+            selectContact(contact._id)
+            setEditing(false)
+          })
+        }
+      } else {
+        alert("Could not update contact.")
+      }
+    })
   }
 
   return contact ? (
@@ -85,7 +118,6 @@ const ContactDetail: FC = () => {
                   label={literals.EMAIL[language]}
                   initialValue={contact?.email}
                   editable={editing}
-
                   required
                   handleChange={handleChange}
                   error={errors?.["email"] || null}
@@ -100,20 +132,18 @@ const ContactDetail: FC = () => {
                   error={errors?.["phoneNumber"] || null}
                 />
               </div>
-              <div className="absolute bottom-0 mb-8 grid grid-cols-2 gap-2">
+              <div className="absolute bottom-0 mb-8 grid grid-cols-2 gap-4">
                 {editing ? (
-                  <TextButton
+                  <Button
                     text={literals.SAVE[language]}
                     uppercase
                     variant="PRIMARY"
-                    bold
-                    handleClick={handleSaveClick}
+                    isSubmit
                   />
                 ) : (
-                  <TextButton
+                  <Button
                     text={literals.EDIT[language]}
                     uppercase
-                    bold
                     variant="PRIMARY"
                     handleClick={handleEditClick}
                   />

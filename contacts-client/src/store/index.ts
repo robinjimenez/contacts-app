@@ -9,7 +9,7 @@ interface storeState {
   literals: Record<string, Literal>
   setLiterals: () => void
   contacts: Contact[]
-  fetchContacts: (user: User & { _id: string }) => void
+  fetchContacts: (user: User & { _id: string }) => Promise<void>
   setContacts: (contacts: Contact[]) => void
   user: User | null
   setUser: (user: User) => void
@@ -28,7 +28,11 @@ export const useStore = create<storeState>()(
     (set, get) => ({
       selectedContact: null,
       selectContact: (id) => {
-        const contact = get().contacts.find((contact) => contact._id === id)
+        const contact = get().contacts.find((contact) => {
+          return contact._id === id
+        })
+        console.log("🚀 ~ file: index.ts ~ line 32 ~ contact", contact)
+
         set({ selectedContact: contact })
       },
       literals: {},
@@ -41,14 +45,14 @@ export const useStore = create<storeState>()(
         const contactsRes = await fetch("/api/contacts/user/" + user._id)
         const contacts = await contactsRes.json()
 
-        set({ contacts: contacts })
+        set({ contacts })
       },
       setContacts: (contacts: Contact[]) => {
-        set({ contacts: contacts })
+        set({ contacts })
       },
       user: null,
       setUser: (user: User) => {
-        set({ user: user })
+        set({ user })
       },
       language: "en",
       setLanguage: (lang: string) => {

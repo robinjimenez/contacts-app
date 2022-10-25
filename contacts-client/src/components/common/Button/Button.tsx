@@ -6,7 +6,7 @@ type Props = {
   uppercase?: boolean
   variant?: "PRIMARY" | "DANGER" | "DEFAULT"
   handleClick?: () => void
-  isSubmit: boolean
+  isSubmit?: boolean
 }
 
 const Button: FC<Props> = ({

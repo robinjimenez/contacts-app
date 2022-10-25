@@ -8,21 +8,16 @@ const getUserContactsQuery = async (id: string) => {
 
 const addContactQuery = async (contact: ContactType) => {
   const newContact = new Contact(contact)
-  newContact.save()
-  console.log("Added", contact)
-
-  return 1
+  return await newContact.save()
 }
 
-const editContactQuery = async (user: User, contact: ContactType) => {
-  // DB Query goes here
-  return 0
+const editContactQuery = async (user: User, id: string, updatedContactData: Partial<ContactType>) => {
+  const updateResult = await Contact.updateOne({ _id: id }, updatedContactData)
+  return updateResult.modifiedCount
 }
 
 const deleteContactQuery = async (user: User, id: string) => {
-  const contact = await Contact.findOneAndDelete({ email: 'test@test.com' }, { _id: 1 })
-  console.log("Removed", contact)
-  return -1 
+  return await Contact.findOneAndDelete({ email: 'test@test.com' }, { _id: 1 })
 }
 
 const getContactByEmailQuery = async (userId: Types.ObjectId, email: string) => {

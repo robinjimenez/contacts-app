@@ -1,5 +1,5 @@
 import { Types } from "mongoose"
-import { addContactQuery, deleteContactQuery, getUserContactsQuery, getContactByEmailQuery } from "../models"
+import { addContactQuery, deleteContactQuery, getUserContactsQuery, getContactByEmailQuery, editContactQuery } from "../models"
 import { Contact, User } from "../types"
 
 const createContact = async (user: User & { _id: Types.ObjectId }, contact: Contact) => {
@@ -12,9 +12,9 @@ const createContact = async (user: User & { _id: Types.ObjectId }, contact: Cont
   }
 }
 
-const editContact = async (user, contact) => {
+const editContact = async (user: User & { _id: Types.ObjectId }, id: string, updatedContactData: Partial<Contact>) => {
   try {
-    return //await contactDb(user, content)
+    return await editContactQuery(user, id, updatedContactData)
   } catch(e: any) {
     throw new Error(e.message)
   }

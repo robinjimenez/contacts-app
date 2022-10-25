@@ -37,6 +37,7 @@ const Form: FC<Props> = ({ children, handleSubmit }) => {
 
   const handleFormSubmit = (event: FormEvent) => {
     event.preventDefault()
+    if (!Object.values(formData).length) return
     setErrors(null)
 
     // Validations
@@ -47,6 +48,8 @@ const Form: FC<Props> = ({ children, handleSubmit }) => {
 
     // Data submit
     if (!Object.values(errors).length) handleSubmit(formData)
+
+    setFormData({})
   }
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {

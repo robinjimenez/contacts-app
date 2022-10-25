@@ -32,10 +32,10 @@ const ContactCreation: FC = () => {
       body: JSON.stringify(data),
     }).then((res) => {
       if (res.status === 201) {
-        alert("User created.")
+        alert("Contact created.")
         user ? fetchContacts(user) : null
       } else {
-        alert("Could not create user.")
+        alert("Could not create contact.")
       }
     })
   }
