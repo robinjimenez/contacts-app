@@ -7,12 +7,27 @@ import Form from "../common/Form/Form"
 import Button from "../common/Button/Button"
 
 const ContactCreation: FC = () => {
-  const { selectContact, literals, language, user, fetchContacts } = useStore(
-    ({ selectContact, literals, language, user, fetchContacts }) => ({
+  const {
+    selectContact,
+    literals,
+    language,
+    user,
+    setContactMode,
+    fetchContacts,
+  } = useStore(
+    ({
       selectContact,
       literals,
       language,
       user,
+      setContactMode,
+      fetchContacts,
+    }) => ({
+      selectContact,
+      literals,
+      language,
+      user,
+      setContactMode,
       fetchContacts,
     })
   )
@@ -30,10 +45,17 @@ const ContactCreation: FC = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    }).then((res) => {
+    }).then(async (res) => {
       if (res.status === 201) {
         alert("Contact created.")
-        user ? fetchContacts(user) : null
+        const data = await res.json()
+        console.log("🚀 ~ file: ContactCreation.tsx ~ line 52 ~ handleSubmit ~ data", data)
+        if (user) {
+          fetchContacts(user).then(() => {
+            selectContact(data.id)
+            setContactMode("VIEW")
+          })
+        }
       } else {
         alert("Could not create contact.")
       }

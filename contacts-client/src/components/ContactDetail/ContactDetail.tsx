@@ -20,28 +20,41 @@ const EmptyContactDetail: FC = () => {
 }
 
 const ContactDetail: FC = () => {
-  const { selectContact, literals, contact, language, fetchContacts, user } =
-    useStore(
-      ({
-        selectContact,
-        selectedContact,
-        literals,
-        language,
-        fetchContacts,
-        user,
-      }) => ({
-        selectContact,
-        contact: selectedContact,
-        literals,
-        language,
-        fetchContacts,
-        user,
-      })
-    )
-  const [editing, setEditing] = useState(false)
+  const {
+    selectContact,
+    contactMode,
+    setContactMode,
+    literals,
+    contact,
+    language,
+    fetchContacts,
+    user,
+  } = useStore(
+    ({
+      selectContact,
+      contactMode,
+      setContactMode,
+      selectedContact,
+      literals,
+      language,
+      fetchContacts,
+      user,
+    }) => ({
+      selectContact,
+      contactMode,
+      setContactMode,
+      contact: selectedContact,
+      literals,
+      language,
+      fetchContacts,
+      user,
+    })
+  )
+
+  const isEditing = contactMode === "EDIT"
 
   const handleEditClick = () => {
-    setEditing(true)
+    setContactMode("EDIT")
   }
 
   const handleSubmit = (formData: Record<string, unknown>) => {
@@ -64,13 +77,43 @@ const ContactDetail: FC = () => {
         if (user) {
           fetchContacts(user).then(() => {
             selectContact(contact._id)
-            setEditing(false)
+            setContactMode("VIEW")
           })
         }
       } else {
         alert("Could not update contact.")
       }
     })
+  }
+
+  const handleDeleteClick = () => {
+    if (!contact) return
+
+    if (
+      confirm(
+        "Are you sure you want to delete this contact? This action is irreversable."
+      )
+    ) {
+      fetch("/api/contacts/" + contact._id, {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user }),
+      }).then((res) => {
+        if (res.status === 200) {
+          alert("Contact deleted.")
+          if (user) {
+            fetchContacts(user).then(() => {
+              selectContact("")
+            })
+          }
+        } else {
+          alert("Could not delete contact.")
+        }
+      })
+    }
   }
 
   return contact ? (
@@ -96,7 +139,7 @@ const ContactDetail: FC = () => {
                     heading
                     label={literals.FIRSTNAME[language]}
                     initialValue={contact?.firstName}
-                    editable={editing}
+                    editable={isEditing}
                     required
                     handleChange={handleChange}
                     error={errors?.["firstName"] || null}
@@ -106,7 +149,7 @@ const ContactDetail: FC = () => {
                     heading
                     label={literals.LASTNAME[language]}
                     initialValue={contact?.lastName}
-                    editable={editing}
+                    editable={isEditing}
                     required
                     handleChange={handleChange}
                     error={errors?.["lastName"] || null}
@@ -117,7 +160,7 @@ const ContactDetail: FC = () => {
                   type="email"
                   label={literals.EMAIL[language]}
                   initialValue={contact?.email}
-                  editable={editing}
+                  editable={isEditing}
                   required
                   handleChange={handleChange}
                   error={errors?.["email"] || null}
@@ -126,14 +169,14 @@ const ContactDetail: FC = () => {
                   name="phoneNumber"
                   label={literals.PHONENUMBER[language]}
                   initialValue={contact?.phoneNumber}
-                  editable={editing}
+                  editable={isEditing}
                   required
                   handleChange={handleChange}
                   error={errors?.["phoneNumber"] || null}
                 />
               </div>
               <div className="absolute bottom-0 mb-8 grid grid-cols-2 gap-4">
-                {editing ? (
+                {isEditing ? (
                   <Button
                     text={literals.SAVE[language]}
                     uppercase
@@ -153,6 +196,7 @@ const ContactDetail: FC = () => {
                   variant="DANGER"
                   uppercase
                   bold
+                  handleClick={handleDeleteClick}
                 />
               </div>
             </div>

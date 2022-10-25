@@ -18,8 +18,12 @@ const ContactListItem: FC<Props> = ({ contact }) => {
   const handleClick = (ev: MouseEvent) => {
     ev?.stopPropagation()
     if (contactMode === "CREATE") {
-      const confirmedExit = confirm("You have unsaved changes. Are you sure you want to leave?")
+      const confirmedExit = confirm(
+        "You have unsaved changes. Are you sure you want to leave?"
+      )
       confirmedExit ? setContactMode("VIEW") : null
+    } else {
+      setContactMode("VIEW")
     }
     selectContact(contact._id)
   }

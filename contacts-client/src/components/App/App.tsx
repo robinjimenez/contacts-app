@@ -39,7 +39,7 @@ const App: FC = () => {
           <ContactList />
         </div>
         <div className="bg-blue-100 sm:col-span-9">
-          {contactMode === "VIEW" ? <ContactDetail /> : <ContactCreation />}
+          {contactMode === "CREATE" ? <ContactCreation /> : <ContactDetail />}
         </div>
       </div>
     </div>

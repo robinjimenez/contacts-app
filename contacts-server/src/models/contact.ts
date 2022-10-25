@@ -1,5 +1,5 @@
 import { Types } from "mongoose"
-import { Contact as ContactType, User } from "../types"
+import { Contact as ContactType, UserWithId } from "../types"
 import Contact from "./contact.models"
 
 const getUserContactsQuery = async (id: string) => {
@@ -11,13 +11,13 @@ const addContactQuery = async (contact: ContactType) => {
   return await newContact.save()
 }
 
-const editContactQuery = async (user: User, id: string, updatedContactData: Partial<ContactType>) => {
-  const updateResult = await Contact.updateOne({ _id: id }, updatedContactData)
+const editContactQuery = async (user: UserWithId, id: string, updatedContactData: Partial<ContactType>) => {
+  const updateResult = await Contact.updateOne({ owner: user._id, _id: id }, updatedContactData)
   return updateResult.modifiedCount
 }
 
-const deleteContactQuery = async (user: User, id: string) => {
-  return await Contact.findOneAndDelete({ email: 'test@test.com' }, { _id: 1 })
+const deleteContactQuery = async (user: UserWithId, id: string) => {
+  return await Contact.findOneAndDelete({ owner: user._id, _id: id }, { _id: 1 })
 }
 
 const getContactByEmailQuery = async (userId: Types.ObjectId, email: string) => {

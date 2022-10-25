@@ -1,8 +1,8 @@
 import { Types } from "mongoose"
 import { addContactQuery, deleteContactQuery, getUserContactsQuery, getContactByEmailQuery, editContactQuery } from "../models"
-import { Contact, User } from "../types"
+import { Contact, UserWithId } from "../types"
 
-const createContact = async (user: User & { _id: Types.ObjectId }, contact: Contact) => {
+const createContact = async (user: UserWithId, contact: Contact) => {
   try {
     contact.owner = user._id.toString()
     contact.creationDate = new Date()
@@ -12,7 +12,7 @@ const createContact = async (user: User & { _id: Types.ObjectId }, contact: Cont
   }
 }
 
-const editContact = async (user: User & { _id: Types.ObjectId }, id: string, updatedContactData: Partial<Contact>) => {
+const editContact = async (user: UserWithId, id: string, updatedContactData: Partial<Contact>) => {
   try {
     return await editContactQuery(user, id, updatedContactData)
   } catch(e: any) {
@@ -20,7 +20,7 @@ const editContact = async (user: User & { _id: Types.ObjectId }, id: string, upd
   }
 }
 
-const deleteContact = async (user: User, id: string) => {
+const deleteContact = async (user: UserWithId, id: string) => {
   try {
     return await deleteContactQuery(user, id)
   } catch(e: any) {
@@ -28,7 +28,7 @@ const deleteContact = async (user: User, id: string) => {
   }
 }
 
-const getContactByEmail = async (user: User & { _id: Types.ObjectId }, email: string) => {
+const getContactByEmail = async (user: UserWithId, email: string) => {
   try {
     const contact = await getContactByEmailQuery(user._id, email)
     return contact.length > 0 ? contact : false

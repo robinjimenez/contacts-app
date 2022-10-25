@@ -9,8 +9,8 @@ const addContact = async (req, res, next) => {
       next()
       return
     }
-    await contactService.createContact(user, contact)
-    res.sendStatus(201) // 201 - created
+    const createdContact = await contactService.createContact(user, contact)
+    res.status(201).send({ id: createdContact._id }) // 201 - created
     next()
   } catch(e) {
     console.log(e.message)
@@ -40,9 +40,11 @@ const editContact = async (req, res, next) => {
 }
 
 const deleteContact = async (req, res, next) => {
-  const {user, contact} = req.body
+  const { user } = req.body
+  const { id } = req.params
+
   try {
-    await contactService.deleteContact(user, contact)
+    await contactService.deleteContact(user, id)
     res.sendStatus(200)
     next()
   } catch(e) {

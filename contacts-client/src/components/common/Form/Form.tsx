@@ -49,6 +49,7 @@ const Form: FC<Props> = ({ children, handleSubmit }) => {
     // Data submit
     if (!Object.values(errors).length) handleSubmit(formData)
 
+    // Reset form data
     setFormData({})
   }
 

@@ -9,4 +9,4 @@ export type Literal = {
   [language: string]: string
 }
 
-export type ContactMode = "VIEW" | "CREATE"
+export type ContactMode = "VIEW" | "CREATE" | "EDIT"
