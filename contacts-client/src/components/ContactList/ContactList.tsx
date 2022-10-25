@@ -9,14 +9,18 @@ const ContactList = () => {
   }))
 
   return (
-    <ScrollableList
-      heading="Your contacts"
-      handleClick={() => selectContact("")}
+    <div
+      className="h-full"
     >
-      {contacts.map((contact) => {
-        return <ContactListItem contact={contact} key={contact._id} />
-      })}
-    </ScrollableList>
+      <ScrollableList
+        heading="Your contacts"
+        handleClick={() => selectContact("")}
+      >
+        {contacts.map((contact) => {
+          return <ContactListItem contact={contact} key={contact._id} />
+        })}
+      </ScrollableList>
+    </div>
   )
 }
 

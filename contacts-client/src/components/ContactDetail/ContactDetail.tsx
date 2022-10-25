@@ -117,8 +117,8 @@ const ContactDetail: FC = () => {
   }
 
   return contact ? (
-    <div className="h-full bg-gray-200 ">
-      <div className="flex h-full flex-col items-center justify-center">
+    <div className="h-full bg-gray-200 flex flex-row">
+      <div className="flex-grow flex h-full flex-col items-center justify-center">
         <div className="mb-8 h-[200px] w-[200px] overflow-hidden rounded-full bg-black">
           <img
             src="https://www.picsum.photos/400"
@@ -203,8 +203,7 @@ const ContactDetail: FC = () => {
           )}
         </Form>
       </div>
-
-      <ContactEdits />
+      <ContactEdits contact={contact} />
     </div>
   ) : (
     <EmptyContactDetail />

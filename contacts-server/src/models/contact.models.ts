@@ -2,13 +2,12 @@ import mongoose, { Types } from "mongoose";
 import { Contact, ContactDataEdit, ContactEdit } from "../types";
 
 const ContactDataEditSchema = new mongoose.Schema<ContactDataEdit>({
-  field: String,
   previousData: String,
   updatedData: String
 })
 
 const ContactEditSchema = new mongoose.Schema<ContactEdit>({
-  dataEdits: [ContactDataEditSchema],
+  dataEdits: { type: Map, of: ContactDataEditSchema },
   date: Date
 })
 

@@ -11,13 +11,12 @@ export type Contact = {
 }
 
 export type ContactEdit = {
-  dataEdits: ContactDataEdit[]
-  date: Date 
+  dataEdits: Record<string, ContactDataEdit>
+  date: Date
 }
 
 export type ContactDataEdit = {
-  field: string
-  previousData: ContactDataFieldType 
+  previousData: ContactDataFieldType
   updatedData: ContactDataFieldType
 }
 

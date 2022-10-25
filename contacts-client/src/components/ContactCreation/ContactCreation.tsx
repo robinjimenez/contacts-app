@@ -49,7 +49,6 @@ const ContactCreation: FC = () => {
       if (res.status === 201) {
         alert("Contact created.")
         const data = await res.json()
-        console.log("🚀 ~ file: ContactCreation.tsx ~ line 52 ~ handleSubmit ~ data", data)
         if (user) {
           fetchContacts(user).then(() => {
             selectContact(data.id)
@@ -129,8 +128,6 @@ const ContactCreation: FC = () => {
           )}
         </Form>
       </div>
-
-      <ContactEdits />
     </div>
   )
 }

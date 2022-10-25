@@ -1,7 +1,7 @@
 import { FC, ReactElement } from "react"
 
 type Props = {
-  children: ReactElement[]
+  children: ReactElement | ReactElement[]
   heading?: string
   handleClick?: () => void
 }

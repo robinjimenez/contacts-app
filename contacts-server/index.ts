@@ -20,10 +20,10 @@ app.listen(port, () => {
 
 (async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    })
+    if (!process.env.MONGODB_URL) throw Error('Missing DB data')
+    if (!process.env.DEFAULT_USER_ID) throw Error('Missing default user data')
+
+    await mongoose.connect(process.env.MONGODB_URL)
 
     // For now we're using a single user for all contacts
     const defaultUser = await userService.getUser(process.env.DEFAULT_USER_ID)

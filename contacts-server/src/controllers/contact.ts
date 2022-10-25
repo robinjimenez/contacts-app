@@ -1,6 +1,7 @@
+import { RequestHandler } from 'express'
 import { contactService } from '../services'
 
-const addContact = async (req, res, next) => {
+const addContact: RequestHandler = async (req, res, next) => {
   const {user, contact} = req.body
   try {
     const contactWithEmail = await contactService.getContactByEmail(user, contact.email)
@@ -12,13 +13,13 @@ const addContact = async (req, res, next) => {
     const createdContact = await contactService.createContact(user, contact)
     res.status(201).send({ id: createdContact._id }) // 201 - created
     next()
-  } catch(e) {
-    console.log(e.message)
+  } catch(e: unknown) {
+    console.log(e)
     res.sendStatus(500) && next()
   }
 }
 
-const editContact = async (req, res, next) => {
+const editContact: RequestHandler = async (req, res, next) => {
   const {user, updatedContactData} = req.body
   const { id } = req.params
   try {
@@ -33,13 +34,13 @@ const editContact = async (req, res, next) => {
     await contactService.editContact(user, id, updatedContactData)
     res.sendStatus(200)
     next()
-  } catch(e) {
-    console.log(e.message)
+  } catch(e: unknown) {
+    console.log(e)
     res.sendStatus(500) && next()
   }
 }
 
-const deleteContact = async (req, res, next) => {
+const deleteContact: RequestHandler = async (req, res, next) => {
   const { user } = req.body
   const { id } = req.params
 
@@ -47,32 +48,34 @@ const deleteContact = async (req, res, next) => {
     await contactService.deleteContact(user, id)
     res.sendStatus(200)
     next()
-  } catch(e) {
-    console.log(e.message)
+  } catch(e: unknown) {
+    console.log(e)
     res.sendStatus(500) && next()
   }
 }
 
-const getContact = async (req, res, next) => {
-  const {user, contact} = req.body
+const getContact: RequestHandler = async (req, res, next) => {
+  const { user } = req.body
+  const { id } = req.params
+
   try {
-    await contactService.getContact(user, contact)
+    const foundContact = await contactService.getContactById(user, id)
     res.sendStatus(200)
     next()
-  } catch(e) {
-    console.log(e.message)
+  } catch(e: unknown) {
+    console.log(e)
     res.sendStatus(500) && next()
   }
 }
 
-const getAllUserContacts = async (req, res, next) => {
+const getAllUserContacts: RequestHandler = async (req, res, next) => {
   const { id } = req.params
   try {
     const contacts = await contactService.getAllUserContacts(id)
     res.status(200).send(contacts)
     next()
-  } catch(e) {
-    console.log(e.message)
+  } catch(e: unknown) {
+    console.log(e)
     res.sendStatus(500) && next()
   }
 }
