@@ -12,7 +12,8 @@ const ContactCreation: FC = () => {
     language,
     setContactMode,
     fetchContacts,
-    sessionData
+    sessionData,
+    setModal,
   } = useStore(
     ({
       selectContact,
@@ -20,14 +21,16 @@ const ContactCreation: FC = () => {
       language,
       setContactMode,
       fetchContacts,
-      sessionData
+      sessionData,
+      setModal,
     }) => ({
       selectContact,
       literals,
       language,
       setContactMode,
       fetchContacts,
-      sessionData
+      sessionData,
+      setModal,
     })
   )
 
@@ -46,14 +49,21 @@ const ContactCreation: FC = () => {
       body: JSON.stringify(data),
     }).then(async (res) => {
       if (res.status === 201) {
-        alert("Contact created.")
+        setModal({
+          message: "CONTACT_CREATION_SUCCESS",
+          title: "CONTACT_CREATION_SUCCESS_TITLE",
+        })
+
         const data = await res.json()
         fetchContacts().then(() => {
           selectContact(data.id)
           setContactMode("VIEW")
         })
       } else {
-        alert("Could not create contact.")
+        setModal({
+          message: "CONTACT_CREATION_ERROR",
+          title: "CONTACT_CREATION_ERROR_TITLE",
+        })
       }
     })
   }
@@ -68,10 +78,11 @@ const ContactCreation: FC = () => {
             alt="contact avatar"
           />
         </div>
-        <Form handleSubmit={handleSubmit}>
+        <Form handleSubmit={handleSubmit} isEditing={true}>
           {(
             handleChange: ChangeEventHandler,
-            errors: Record<string, string>
+            errors: Record<string, string>,
+            hasUnsavedChanges: boolean
           ) => (
             <div className="mb-4 flex flex-col items-center">
               <div className="w-full">
@@ -115,10 +126,11 @@ const ContactCreation: FC = () => {
               </div>
               <div className="absolute bottom-0 mb-8">
                 <Button
+                  enabled={hasUnsavedChanges}
                   text={literals.SAVE[language]}
-                  variant="PRIMARY"
+                  variant={hasUnsavedChanges ? "PRIMARY" : "DEFAULT"}
                   uppercase
-                  isSubmit
+                  isSubmit={hasUnsavedChanges}
                 />
               </div>
             </div>

@@ -29,6 +29,7 @@ const ContactDetail: FC = () => {
     language,
     fetchContacts,
     sessionData,
+    setModal,
   } = useStore(
     ({
       selectContact,
@@ -39,6 +40,7 @@ const ContactDetail: FC = () => {
       language,
       fetchContacts,
       sessionData,
+      setModal,
     }) => ({
       selectContact,
       contactMode,
@@ -48,6 +50,7 @@ const ContactDetail: FC = () => {
       language,
       fetchContacts,
       sessionData,
+      setModal,
     })
   )
 
@@ -57,6 +60,10 @@ const ContactDetail: FC = () => {
 
   const handleEditClick = () => {
     setContactMode("EDIT")
+  }
+
+  const handleCancelClick = () => {
+    setContactMode("VIEW")
   }
 
   const handleSubmit = (formData: Record<string, unknown>) => {
@@ -75,13 +82,19 @@ const ContactDetail: FC = () => {
       body: JSON.stringify(data),
     }).then((res) => {
       if (res.status === 200) {
-        alert("Contact updated.")
+        setModal({
+          message: "CONTACT_UPDATE_SUCCESS",
+          title: "CONTACT_UPDATE_SUCCESS_TITLE",
+        })
         fetchContacts().then(() => {
           selectContact(contact._id)
           setContactMode("VIEW")
         })
       } else {
-        alert("Could not update contact.")
+        setModal({
+          message: "CONTACT_UPDATE_ERROR",
+          title: "CONTACT_UPDATE_ERROR_TITLE",
+        })
       }
     })
   }
@@ -103,12 +116,18 @@ const ContactDetail: FC = () => {
         },
       }).then((res) => {
         if (res.status === 200) {
-          alert("Contact deleted.")
+          setModal({
+            message: "CONTACT_DELETION_SUCCESS",
+            title: "CONTACT_DELETION_SUCCESS_TITLE",
+          })
           fetchContacts().then(() => {
             selectContact("")
           })
         } else {
-          alert("Could not delete contact.")
+          setModal({
+            message: "CONTACT_DELETION_ERROR",
+            title: "CONTACT_DELETION_ERROR_TITLE",
+          })
         }
       })
     }
@@ -124,10 +143,11 @@ const ContactDetail: FC = () => {
             alt="contact avatar"
           />
         </div>
-        <Form handleSubmit={handleSubmit}>
+        <Form handleSubmit={handleSubmit} isEditing={isEditing}>
           {(
             handleChange: ChangeEventHandler,
-            errors: Record<string, string>
+            errors: Record<string, string>,
+            hasUnsavedChanges: boolean
           ) => (
             <div className="mb-4 flex flex-col items-center">
               <div className="w-full">
@@ -177,6 +197,7 @@ const ContactDetail: FC = () => {
                 className="mt-10"
                 style={{
                   opacity: showEdits ? 0 : 1,
+                  pointerEvents: showEdits ? "none" : "auto",
                   transition: "opacity 200ms",
                 }}
               >
@@ -189,10 +210,17 @@ const ContactDetail: FC = () => {
               <div className="absolute bottom-0 mb-8 grid grid-cols-2 gap-4">
                 {isEditing ? (
                   <Button
-                    text={literals.SAVE[language]}
+                    text={
+                      hasUnsavedChanges
+                        ? literals.SAVE[language]
+                        : literals.CANCEL[language]
+                    }
+                    variant={hasUnsavedChanges ? "PRIMARY" : "DEFAULT"}
                     uppercase
-                    variant="PRIMARY"
-                    isSubmit
+                    isSubmit={hasUnsavedChanges}
+                    handleClick={
+                      hasUnsavedChanges ? undefined : handleCancelClick
+                    }
                   />
                 ) : (
                   <Button
@@ -222,7 +250,6 @@ const ContactDetail: FC = () => {
           />
         ) : null}
       </div>
-
     </div>
   ) : (
     <EmptyContactDetail />

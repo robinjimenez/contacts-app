@@ -2,7 +2,7 @@ import jwtDecode, { JwtPayload } from "jwt-decode"
 import create from "zustand"
 import { persist } from "zustand/middleware"
 
-import { Contact, ContactMode, Literal, SessionData, User } from "~/types"
+import { Contact, ContactMode, Literal, SessionData, ModalData } from "~/types"
 import literals from "../data/literals.json"
 
 interface storeState {
@@ -15,12 +15,12 @@ interface storeState {
   setContacts: (contacts: Contact[]) => void
   sessionData: SessionData | null
   setSessionData: (token: string) => void
-  user: User | null
-  setUser: (user: User) => void
   language: string
   setLanguage: (lang: string) => void
   contactMode: ContactMode
   setContactMode: (mode: ContactMode) => void
+  modal: ModalData | null
+  setModal: (modal: ModalData | null) => void
 }
 
 const fetchLiterals = async () => {
@@ -67,10 +67,6 @@ export const useStore = create<storeState>()(
           },
         })
       },
-      user: null,
-      setUser: (user: User) => {
-        set({ user })
-      },
       language: "en",
       setLanguage: (lang: string) => {
         set({ language: lang })
@@ -78,6 +74,10 @@ export const useStore = create<storeState>()(
       contactMode: "VIEW",
       setContactMode: (mode: ContactMode) => {
         set({ contactMode: mode })
+      },
+      modal: null,
+      setModal: (modal: ModalData | null) => {
+        set({ modal })
       },
     }),
     {

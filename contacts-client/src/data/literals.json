@@ -29,6 +29,11 @@
     "es": "Guardar",
     "ca": "Desar"
   },
+  "CANCEL": {
+    "en": "Cancel",
+    "es": "Cancelar",
+    "ca": "Cancel·lar"
+  },
   "VIEW_EDITS": {
     "en": "View edits",
     "es": "Ver cambios",
@@ -98,5 +103,41 @@
     "en": "Created on",
     "es": "Creado el",
     "ca": "Creat el"
+  },
+  "CONTACT_CREATION_SUCCESS": {
+    "en": "Your new contact has been added."
+  },
+  "CONTACT_CREATION_SUCCESS_TITLE": {
+    "en": "Contact created"
+  },
+  "CONTACT_CREATION_ERROR": {
+    "en": "Oops. Could not create contact."
+  },
+  "CONTACT_CREATION_ERROR_TITLE": {
+    "en": "Contact creation error"
+  },
+  "CONTACT_UPDATE_SUCCESS": {
+    "en": "The data for your contact has been updated."
+  },
+  "CONTACT_UPDATE_SUCCESS_TITLE": {
+    "en": "Contact updated"
+  },
+  "CONTACT_UPDATE_ERROR": {
+    "en": "Oops. Could not update contact."
+  },
+  "CONTACT_UPDATE_ERROR_TITLE": {
+    "en": "Contact update error"
+  },
+  "CONTACT_DELETION_SUCCESS": {
+    "en": "Your contact has been deleted"
+  },
+  "CONTACT_DELETION_SUCCESS_TITLE": {
+    "en": "Contact deleted"
+  },
+  "CONTACT_DELETION_ERROR": {
+    "en": "Oops. Contact could not be deleted."
+  },
+  "CONTACT_DELETION_ERROR_TITLE": {
+    "en": "Contact deletion error"
   }
 }

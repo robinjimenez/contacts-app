@@ -12,13 +12,19 @@ const ContactEditItem: FC<Props> = ({ contactEdit }) => {
     language,
   }))
   return (
-    <div className="flex flex-col items-center border-b border-b-gray-400 p-4">
+    <div
+      key={new Date(contactEdit.date).getTime()}
+      className="flex flex-col items-center border-b border-b-gray-400 p-4"
+    >
       <p className="mb-2 w-full text-xs">
         On {new Date(contactEdit.date).toLocaleString()}
       </p>
-      {Object.entries(contactEdit.dataEdits).map(([key, value], index) => {
+      {Object.entries(contactEdit.dataEdits).map(([key, value]) => {
         return (
-          <div className="mt-2 flex w-full flex-col border-b border-b-gray-200">
+          <div
+            key={key}
+            className="mt-2 flex w-full flex-col border-b border-b-gray-200"
+          >
             <p className="mr-2 text-sm">
               {literals[key.toUpperCase()][language]}:
             </p>

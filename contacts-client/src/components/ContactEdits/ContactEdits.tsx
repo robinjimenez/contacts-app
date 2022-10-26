@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react"
+import { FC } from "react"
 import { Contact } from "~/types"
 import ScrollableList from "../common/ScrollableList"
 import ContactCreationItem from "./ContactCreationItem"
@@ -12,7 +12,12 @@ type Props = {
 const ContactEdits: FC<Props> = ({ contact, handleClose }) => {
   const edits =
     contact.contactEdits
-      ?.map((edit) => <ContactEditItem contactEdit={edit} />)
+      ?.map((edit) => (
+        <ContactEditItem
+          key={`edit-${new Date(edit.date).getTime()}`}
+          contactEdit={edit}
+        />
+      ))
       .reverse() || []
 
   return (
@@ -30,7 +35,10 @@ const ContactEdits: FC<Props> = ({ contact, handleClose }) => {
       <ScrollableList heading="Edit history">
         {[
           ...edits,
-          <ContactCreationItem creationDate={contact.creationDate} />,
+          <ContactCreationItem
+            key={`edit-${new Date(contact.creationDate).getTime()}`}
+            creationDate={contact.creationDate}
+          />,
         ]}
       </ScrollableList>
     </div>

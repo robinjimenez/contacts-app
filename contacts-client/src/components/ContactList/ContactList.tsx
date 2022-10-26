@@ -9,9 +9,7 @@ const ContactList = () => {
   }))
 
   return (
-    <div
-      className="h-full"
-    >
+    <div className="h-full">
       <ScrollableList
         heading="Your contacts"
         handleClick={() => selectContact("")}

@@ -1,4 +1,5 @@
-import { ChangeEvent, ChangeEventHandler, FC, useState } from "react"
+import { ChangeEvent, ChangeEventHandler, FC, useEffect, useState } from "react"
+import { Contact } from "~/types"
 import { useStore } from "../../../store"
 
 type Props = {
@@ -25,10 +26,13 @@ const EditableText: FC<Props> = ({
   handleChange,
   error,
 }) => {
-  const { literals, language } = useStore(({ literals, language }) => ({
-    literals,
-    language,
-  }))
+  const { selectedContact, literals, language } = useStore(
+    ({ selectedContact, literals, language }) => ({
+      selectedContact,
+      literals,
+      language,
+    })
+  )
   const [value, setValue] = useState(initialValue)
 
   const textStyle = heading
@@ -39,6 +43,14 @@ const EditableText: FC<Props> = ({
     setValue(ev.currentTarget.value)
     handleChange(ev)
   }
+
+  useEffect(() => {
+    if (editable && selectedContact) {
+      const contactField = selectedContact[name as keyof Contact]
+
+      if (value !== contactField) setValue(contactField as keyof Contact)
+    }
+  }, [editable])
 
   return (
     <div

@@ -22,10 +22,10 @@ const Button: FC<Props> = ({
       type={isSubmit ? "submit" : "button"}
       disabled={!enabled}
       className={`rounded-xl px-4 py-2 text-white ${
-        variant === "DANGER" ? "bg-red-500" : ""
-      } ${variant === "PRIMARY" ? "bg-blue-500" : ""} ${
-        uppercase ? "uppercase" : ""
-      } ${
+        variant === "DEFAULT" ? "text-black" : ""
+      } ${variant === "DANGER" ? "bg-red-500" : ""} ${
+        variant === "PRIMARY" ? "bg-blue-500" : ""
+      } ${uppercase ? "uppercase" : ""} ${
         enabled ? "cursor-pointer" : "cursor-default opacity-50"
       } hover:opacity-75`}
       onClick={handleClick || null}

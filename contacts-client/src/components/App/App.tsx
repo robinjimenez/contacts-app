@@ -1,29 +1,22 @@
 import { FC, useEffect } from "react"
 import { useStore } from "../../store"
-import ContactCreation from "../ContactCreation/ContactCreation"
+import ContactCreation from "../ContactCreation"
 import ContactDetail from "../ContactDetail"
 import ContactList from "../ContactList"
+import ModalOverlay from "../ModalOverlay"
 import Navbar from "../Navbar/Navbar"
 
 const App: FC = () => {
-  const { setLiterals, fetchContacts, contactMode, setSessionData, setUser } =
-    useStore(
-      ({
+  const { setLiterals, fetchContacts, contactMode, setSessionData } = useStore(
+    ({ setLiterals, fetchContacts, contactMode, setSessionData }) => {
+      return {
         setLiterals,
         fetchContacts,
         contactMode,
         setSessionData,
-        setUser,
-      }) => {
-        return {
-          setLiterals,
-          fetchContacts,
-          contactMode,
-          setSessionData,
-          setUser,
-        }
       }
-    )
+    }
+  )
 
   useEffect(() => {
     ;(async () => {
@@ -36,13 +29,7 @@ const App: FC = () => {
         await setSessionData(accessToken.token)
 
         fetchContacts()
-
-        /* const userRes = await fetch("/api/users")
-        const user = await userRes.json()
-        setUser(user)
-
-        fetchContacts(user)*/
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.log("Error fetching data: ", err)
       }
     })()
@@ -61,6 +48,7 @@ const App: FC = () => {
           {contactMode === "CREATE" ? <ContactCreation /> : <ContactDetail />}
         </div>
       </div>
+      <ModalOverlay />
     </div>
   )
 }

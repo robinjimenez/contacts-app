@@ -15,3 +15,8 @@ export type Literal = {
 }
 
 export type ContactMode = "VIEW" | "CREATE" | "EDIT"
+
+export type ModalData = {
+  message: string
+  title: string
+}
