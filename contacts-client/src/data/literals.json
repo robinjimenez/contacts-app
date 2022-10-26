@@ -29,6 +29,11 @@
     "es": "Guardar",
     "ca": "Desar"
   },
+  "VIEW_EDITS": {
+    "en": "View edits",
+    "es": "Ver cambios",
+    "ca": "Veure canvis"
+  },
   "DELETE": {
     "en": "Delete",
     "es": "Eliminar",
@@ -88,5 +93,10 @@
     "en": "Phone number is invalid.",
     "es": "Teléfono invalido.",
     "ca": "Telèfon invàlid."
+  },
+  "CREATED_ON": {
+    "en": "Created on",
+    "es": "Creado el",
+    "ca": "Creat el"
   }
 }

@@ -1,4 +1,4 @@
-import { FC, MouseEvent } from "react"
+import { FC } from "react"
 import { useStore } from "../../store"
 import { ContactEdit } from "~/types"
 

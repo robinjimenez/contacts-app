@@ -1,82 +1,122 @@
+//@ts-nocheck
+import jwt from 'jsonwebtoken'
 import { RequestHandler } from 'express'
-import { contactService } from '../services'
+import { contactService, userService } from '../services'
 
-const addContact: RequestHandler = async (req, res, next) => {
-  const {user, contact} = req.body
+const addContact: RequestHandler = async (req, res) => {
+  const {contact} = req.body
+  const { authorization } = req.headers
   try {
-    const contactWithEmail = await contactService.getContactByEmail(user, contact.email)
+    if (!authorization) { res.sendStatus(401); return }
+
+    const token = authorization.split(' ')
+    const decodedToken = jwt.verify(token[1], process.env.PRIVATE_KEY || '')
+    if (!decodedToken) { res.sendStatus(401); return }
+
+    const user = await userService.getUserByUsername(decodedToken.iss)
+    if (!user) { res.sendStatus(401); return }
+
+    const contactWithEmail = await contactService.getContactByEmail(user._id.toString(), contact.email)
     if (contactWithEmail) {
       res.status(400).send({ message: 'EXISTING_CONTACT_EMAIL' })
-      next()
       return
     }
-    const createdContact = await contactService.createContact(user, contact)
+    const createdContact = await contactService.createContact(user._id.toString(), contact)
     res.status(201).send({ id: createdContact._id }) // 201 - created
-    next()
   } catch(e: unknown) {
     console.log(e)
-    res.sendStatus(500) && next()
+    res.sendStatus(500)
   }
 }
 
-const editContact: RequestHandler = async (req, res, next) => {
-  const {user, updatedContactData} = req.body
+const editContact: RequestHandler = async (req, res) => {
+  const {updatedContactData} = req.body
   const { id } = req.params
+  const { authorization } = req.headers
   try {
+    if (!authorization) { res.sendStatus(401); return }
+
+    const token = authorization.split(' ')
+    const decodedToken = jwt.verify(token[1], process.env.PRIVATE_KEY || '')
+    if (!decodedToken) { res.sendStatus(401); return }
+
+    const user = await userService.getUserByUsername(decodedToken.iss)
+    if (!user) { res.sendStatus(401); return }
+
     if (updatedContactData.email) {
-      const contactWithEmail = await contactService.getContactByEmail(user, updatedContactData.email)
+      const contactWithEmail = await contactService.getContactByEmail(user._id.toString(), updatedContactData.email)
       if (contactWithEmail) {
         res.status(400).send({ message: 'EXISTING_CONTACT_EMAIL' })
-        next()
         return
       }
     }
-    await contactService.editContact(user, id, updatedContactData)
+    await contactService.editContact(user._id.toString(), id, updatedContactData)
     res.sendStatus(200)
-    next()
   } catch(e: unknown) {
     console.log(e)
-    res.sendStatus(500) && next()
+    res.sendStatus(500)
   }
 }
 
-const deleteContact: RequestHandler = async (req, res, next) => {
-  const { user } = req.body
-  const { id } = req.params
-
+const deleteContact: RequestHandler = async (req, res) => {
+  const { id } = req.params
+  const { authorization } = req.headers
   try {
-    await contactService.deleteContact(user, id)
+    if (!authorization) { res.sendStatus(401); return }
+
+    const token = authorization.split(' ')
+    const decodedToken = jwt.verify(token[1], process.env.PRIVATE_KEY || '')
+    if (!decodedToken) { res.sendStatus(401); return }
+
+    const user = await userService.getUserByUsername(decodedToken.iss)
+    if (!user) { res.sendStatus(401); return }
+
+    await contactService.deleteContact(user._id.toString(), id)
     res.sendStatus(200)
-    next()
   } catch(e: unknown) {
     console.log(e)
-    res.sendStatus(500) && next()
+    res.sendStatus(500)
   }
 }
 
-const getContact: RequestHandler = async (req, res, next) => {
-  const { user } = req.body
-  const { id } = req.params
-
+const getContact: RequestHandler = async (req, res) => {
+  const { id } = req.params
+  const { authorization } = req.headers
   try {
-    const foundContact = await contactService.getContactById(user, id)
+    if (!authorization) { res.sendStatus(401); return }
+
+    const token = authorization.split(' ')
+    const decodedToken = jwt.verify(token[1], process.env.PRIVATE_KEY || '')
+    if (!decodedToken) { res.sendStatus(401); return }
+
+    const user = await userService.getUserByUsername(decodedToken.iss)
+    if (!user) { res.sendStatus(401); return }
+
+    const foundContact = await contactService.getContactById(user._id.toString(), id)
     res.sendStatus(200)
-    next()
   } catch(e: unknown) {
     console.log(e)
-    res.sendStatus(500) && next()
+    res.sendStatus(500)
   }
 }
 
-const getAllUserContacts: RequestHandler = async (req, res, next) => {
-  const { id } = req.params
+const getAllUserContacts: RequestHandler = async (req, res) => {
+  const { authorization } = req.headers
   try {
-    const contacts = await contactService.getAllUserContacts(id)
+    if (!authorization) { res.sendStatus(401); return }
+
+    const token = authorization.split(' ')
+    const decodedToken = jwt.verify(token[1], process.env.PRIVATE_KEY || '')
+    if (!decodedToken) { res.sendStatus(401); return }
+
+    const user = await userService.getUserByUsername(decodedToken.iss)
+    if (!user) { res.sendStatus(401); return }
+
+    const contacts = await contactService.getAllUserContacts(user._id.toString())
     res.status(200).send(contacts)
-    next()
   } catch(e: unknown) {
     console.log(e)
-    res.sendStatus(500) && next()
+    res.sendStatus(500)
   }
 }
 

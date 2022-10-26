@@ -2,7 +2,7 @@ import { Types } from "mongoose"
 import { Contact as ContactType, UserWithId } from "../types"
 import Contact from "./contact.models"
 
-const getUserContactsQuery = async (id: Types.ObjectId) => {
+const getUserContactsQuery = async (id: string) => {
   return await Contact.find({ owner: id })
 }
 
@@ -11,20 +11,20 @@ const addContactQuery = async (contact: ContactType) => {
   return await newContact.save()
 }
 
-const editContactQuery = async (user: UserWithId, id: Types.ObjectId, updatedContactData: Partial<ContactType>) => {
-  const updateResult = await Contact.updateOne({ owner: user._id, _id: id }, updatedContactData)
+const editContactQuery = async (userId: string, id: Types.ObjectId, updatedContactData: Partial<ContactType>) => {
+  const updateResult = await Contact.updateOne({ owner: userId, _id: id }, updatedContactData)
   return updateResult.modifiedCount
 }
 
-const deleteContactQuery = async (user: UserWithId, id: Types.ObjectId) => {
-  return await Contact.findOneAndDelete({ owner: user._id, _id: id }, { _id: 1 })
+const deleteContactQuery = async (userId: string, id: Types.ObjectId) => {
+  return await Contact.findOneAndDelete({ owner: userId, _id: id }, { _id: 1 })
 }
 
-const getContactByIdQuery = async (userId: Types.ObjectId, id: string) => {
+const getContactByIdQuery = async (userId: string, id: string) => {
   return await Contact.findOne({ owner: userId, _id: id })
 }
 
-const getContactByEmailQuery = async (userId: Types.ObjectId, email: string) => {
+const getContactByEmailQuery = async (userId: string, email: string) => {
   return await Contact.find({ owner: userId, email: email })
 }
 

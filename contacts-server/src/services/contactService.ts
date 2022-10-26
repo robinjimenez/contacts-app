@@ -1,11 +1,10 @@
 // @ts-nocheck
-import { Types } from "mongoose"
 import { addContactQuery, deleteContactQuery, getUserContactsQuery, getContactByEmailQuery, getContactByIdQuery, editContactQuery } from "../models"
-import { Contact, ContactDataEdit, ContactDataFieldType, ContactEdit, UserWithId } from "../types"
+import { Contact, ContactDataEdit, ContactDataFieldType } from "../types"
 
-const createContact = async (user: UserWithId, contact: Contact) => {
+const createContact = async (userId: string, contact: Contact) => {
   try {
-    contact.owner = user._id.toString()
+    contact.owner = userId
     contact.creationDate = new Date()
     contact.contactEdits = []
     return await addContactQuery(contact)
@@ -14,9 +13,9 @@ const createContact = async (user: UserWithId, contact: Contact) => {
   }
 }
 
-const editContact = async (user: UserWithId, id: Types.ObjectId, updatedContactData: Partial<Contact>) => {
+const editContact = async (userId: string, id: string, updatedContactData: Partial<Contact>) => {
   try {
-    const contact = await getContactById(user, id.toString())
+    const contact = await getContactById(userId, id.toString())
     if (!contact) throw Error("Contact not found.")
     if (!contact.contactEdits) contact.contactEdits = []
 
@@ -34,41 +33,41 @@ const editContact = async (user: UserWithId, id: Types.ObjectId, updatedContactD
       dataEdits
     }]
 
-    return await editContactQuery(user, id, updatedContactData)
+    return await editContactQuery(userId, id, updatedContactData)
   } catch(e: any) {
     throw new Error(e.message)
   }
 }
 
-const deleteContact = async (user: UserWithId, id: Types.ObjectId) => {
+const deleteContact = async (userId: string, id: string) => {
   try {
-    return await deleteContactQuery(user, id)
+    return await deleteContactQuery(userId, id)
   } catch(e: any) {
     throw new Error(e.message)
   }
 }
 
-const getContactByEmail = async (user: UserWithId, email: string) => {
+const getContactByEmail = async (userId: string, email: string) => {
   try {
-    const contact = await getContactByEmailQuery(user._id, email)
+    const contact = await getContactByEmailQuery(userId, email)
     return contact.length > 0 ? contact : false
   } catch(e: any) {
     throw new Error(e.message)
   }
 }
 
-const getContactById = async (user: UserWithId, id: string) => {
+const getContactById = async (userId: string, id: string) => {
   try {
-    const contact = await getContactByIdQuery(user._id, id)
+    const contact = await getContactByIdQuery(userId, id)
     return contact
   } catch(e: any) {
     throw new Error(e.message)
   }
 }
 
-const getAllUserContacts = async (id: Types.ObjectId) => {
+const getAllUserContacts = async (userId: string) => {
   try {
-    return await getUserContactsQuery(id)
+    return await getUserContactsQuery(userId)
   } catch(e: any) {
     throw new Error(e.message)
   }

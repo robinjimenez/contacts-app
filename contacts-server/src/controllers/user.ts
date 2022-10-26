@@ -1,11 +1,12 @@
 import { RequestHandler } from 'express'
 import { userService } from '../services'
 
-const getUser: RequestHandler = async (req, res, next) => {
+const loginUser: RequestHandler = async (req, res, next) => {
   try {
-    if (!process.env.DEFAULT_USER_ID) return
-    const user = await userService.getUser(process.env.DEFAULT_USER_ID)
-    res.status(200).send(user)
+    const defaultUser = await userService.getUser(process.env.DEFAULT_USER_ID || '')
+    if (!defaultUser) return
+    const token = await userService.loginUser(defaultUser)
+    res.status(200).send({ token })
     next()
   } catch(e: unknown) {
     console.log(e)
@@ -14,5 +15,5 @@ const getUser: RequestHandler = async (req, res, next) => {
 }
 
 export default {
-  getUser
+  loginUser
 }

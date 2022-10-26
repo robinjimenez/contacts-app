@@ -28,7 +28,7 @@ const ContactDetail: FC = () => {
     contact,
     language,
     fetchContacts,
-    user,
+    sessionData,
   } = useStore(
     ({
       selectContact,
@@ -38,7 +38,7 @@ const ContactDetail: FC = () => {
       literals,
       language,
       fetchContacts,
-      user,
+      sessionData,
     }) => ({
       selectContact,
       contactMode,
@@ -47,9 +47,11 @@ const ContactDetail: FC = () => {
       literals,
       language,
       fetchContacts,
-      user,
+      sessionData,
     })
   )
+
+  const [showEdits, setShowEdits] = useState(false)
 
   const isEditing = contactMode === "EDIT"
 
@@ -60,7 +62,6 @@ const ContactDetail: FC = () => {
   const handleSubmit = (formData: Record<string, unknown>) => {
     if (!contact) return
     const data = {
-      user,
       updatedContactData: formData,
     }
 
@@ -69,17 +70,16 @@ const ContactDetail: FC = () => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionData?.accessToken}`,
       },
       body: JSON.stringify(data),
     }).then((res) => {
       if (res.status === 200) {
         alert("Contact updated.")
-        if (user) {
-          fetchContacts(user).then(() => {
-            selectContact(contact._id)
-            setContactMode("VIEW")
-          })
-        }
+        fetchContacts().then(() => {
+          selectContact(contact._id)
+          setContactMode("VIEW")
+        })
       } else {
         alert("Could not update contact.")
       }
@@ -99,16 +99,14 @@ const ContactDetail: FC = () => {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionData?.accessToken}`,
         },
-        body: JSON.stringify({ user }),
       }).then((res) => {
         if (res.status === 200) {
           alert("Contact deleted.")
-          if (user) {
-            fetchContacts(user).then(() => {
-              selectContact("")
-            })
-          }
+          fetchContacts().then(() => {
+            selectContact("")
+          })
         } else {
           alert("Could not delete contact.")
         }
@@ -117,8 +115,8 @@ const ContactDetail: FC = () => {
   }
 
   return contact ? (
-    <div className="h-full bg-gray-200 flex flex-row">
-      <div className="flex-grow flex h-full flex-col items-center justify-center">
+    <div className="flex h-full flex-col bg-gray-200 sm:flex-row">
+      <div className="my-10 flex h-full flex-grow flex-col items-center justify-center sm:my-0">
         <div className="mb-8 h-[200px] w-[200px] overflow-hidden rounded-full bg-black">
           <img
             src="https://www.picsum.photos/400"
@@ -175,6 +173,19 @@ const ContactDetail: FC = () => {
                   error={errors?.["phoneNumber"] || null}
                 />
               </div>
+              <div
+                className="mt-10"
+                style={{
+                  opacity: showEdits ? 0 : 1,
+                  transition: "opacity 200ms",
+                }}
+              >
+                <TextButton
+                  text={literals.VIEW_EDITS[language]}
+                  uppercase
+                  handleClick={() => setShowEdits(true)}
+                />
+              </div>
               <div className="absolute bottom-0 mb-8 grid grid-cols-2 gap-4">
                 {isEditing ? (
                   <Button
@@ -203,7 +214,15 @@ const ContactDetail: FC = () => {
           )}
         </Form>
       </div>
-      <ContactEdits contact={contact} />
+      <div className="h-full">
+        {showEdits ? (
+          <ContactEdits
+            contact={contact}
+            handleClose={() => setShowEdits(false)}
+          />
+        ) : null}
+      </div>
+
     </div>
   ) : (
     <EmptyContactDetail />

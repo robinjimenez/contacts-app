@@ -12,7 +12,8 @@ import {
 
 import {
   addUserQuery,
-  getUserQuery
+  getUserQuery,
+  getUserByUsernameQuery
 } from './user'
 
-export { Contact, addContactQuery, editContactQuery, deleteContactQuery, User, addUserQuery, getUserQuery, getUserContactsQuery, getContactByIdQuery, getContactByEmailQuery }
+export { Contact, addContactQuery, editContactQuery, deleteContactQuery, User, addUserQuery, getUserQuery, getUserByUsernameQuery, getUserContactsQuery, getContactByIdQuery, getContactByEmailQuery }

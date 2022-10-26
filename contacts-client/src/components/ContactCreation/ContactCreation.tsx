@@ -1,7 +1,6 @@
 import { ChangeEventHandler, FC } from "react"
 import { useStore } from "../../store"
 
-import ContactEdits from "../ContactEdits"
 import EditableText from "../common/EditableText/EditableText"
 import Form from "../common/Form/Form"
 import Button from "../common/Button/Button"
@@ -11,30 +10,29 @@ const ContactCreation: FC = () => {
     selectContact,
     literals,
     language,
-    user,
     setContactMode,
     fetchContacts,
+    sessionData
   } = useStore(
     ({
       selectContact,
       literals,
       language,
-      user,
       setContactMode,
       fetchContacts,
+      sessionData
     }) => ({
       selectContact,
       literals,
       language,
-      user,
       setContactMode,
       fetchContacts,
+      sessionData
     })
   )
 
   const handleSubmit = (formData: Record<string, unknown>) => {
     const data = {
-      user,
       contact: formData,
     }
 
@@ -43,18 +41,17 @@ const ContactCreation: FC = () => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionData?.accessToken}`,
       },
       body: JSON.stringify(data),
     }).then(async (res) => {
       if (res.status === 201) {
         alert("Contact created.")
         const data = await res.json()
-        if (user) {
-          fetchContacts(user).then(() => {
-            selectContact(data.id)
-            setContactMode("VIEW")
-          })
-        }
+        fetchContacts().then(() => {
+          selectContact(data.id)
+          setContactMode("VIEW")
+        })
       } else {
         alert("Could not create contact.")
       }

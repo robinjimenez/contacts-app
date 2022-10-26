@@ -1,6 +1,8 @@
+import jwtDecode, { JwtPayload } from "jwt-decode"
 import create from "zustand"
 import { persist } from "zustand/middleware"
-import { Contact, ContactMode, Literal, User } from "~/types"
+
+import { Contact, ContactMode, Literal, SessionData, User } from "~/types"
 import literals from "../data/literals.json"
 
 interface storeState {
@@ -9,8 +11,10 @@ interface storeState {
   literals: Record<string, Literal>
   setLiterals: () => void
   contacts: Contact[]
-  fetchContacts: (user: User & { _id: string }) => Promise<void>
+  fetchContacts: () => Promise<void>
   setContacts: (contacts: Contact[]) => void
+  sessionData: SessionData | null
+  setSessionData: (token: string) => void
   user: User | null
   setUser: (user: User) => void
   language: string
@@ -31,8 +35,6 @@ export const useStore = create<storeState>()(
         const contact = get().contacts.find((contact) => {
           return contact._id === id
         })
-        console.log("🚀 ~ file: index.ts ~ line 32 ~ contact", contact)
-
         set({ selectedContact: contact })
       },
       literals: {},
@@ -41,14 +43,29 @@ export const useStore = create<storeState>()(
         set({ literals: await literals })
       },
       contacts: [],
-      fetchContacts: async (user: User & { _id: string }) => {
-        const contactsRes = await fetch("/api/contacts/user/" + user._id)
+      fetchContacts: async () => {
+        if (!get().sessionData?.accessToken) return
+        const contactsRes = await fetch("/api/contacts/user", {
+          headers: {
+            Authorization: `Bearer ${get().sessionData?.accessToken}`,
+          },
+        })
         const contacts = await contactsRes.json()
-
         set({ contacts })
       },
       setContacts: (contacts: Contact[]) => {
         set({ contacts })
+      },
+      sessionData: null,
+      setSessionData: (token: string) => {
+        const decodedToken = jwtDecode<JwtPayload>(token)
+        if (!decodedToken.iss) return
+        set({
+          sessionData: {
+            username: decodedToken.iss,
+            accessToken: token,
+          },
+        })
       },
       user: null,
       setUser: (user: User) => {
