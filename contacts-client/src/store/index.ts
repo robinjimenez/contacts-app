@@ -45,11 +45,14 @@ export const useStore = create<storeState>()(
       contacts: [],
       fetchContacts: async () => {
         if (!get().sessionData?.accessToken) return
-        const contactsRes = await fetch("http://localhost:3001/api/contacts/user", {
-          headers: {
-            Authorization: `Bearer ${get().sessionData?.accessToken}`,
-          },
-        })
+        const contactsRes = await fetch(
+          "http://localhost:3001/api/contacts/user",
+          {
+            headers: {
+              Authorization: `Bearer ${get().sessionData?.accessToken}`,
+            },
+          }
+        )
         const contacts = await contactsRes.json()
         set({ contacts })
       },

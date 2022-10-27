@@ -24,7 +24,9 @@ const App: FC = () => {
       await setLiterals()
 
       try {
-        const response = await fetch("http://localhost:3001/api/users", { method: "POST" })
+        const response = await fetch("http://localhost:3001/api/users", {
+          method: "POST",
+        })
         const accessToken = await response.json()
         await setSessionData(accessToken.token)
 

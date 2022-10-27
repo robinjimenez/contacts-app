@@ -18,7 +18,7 @@ const ModalOverlay: FC = () => {
             {literals[modal.title][language]}
           </p>
           <button
-            className="absolute right-0 top-0 mx-4 flex h-full items-center justify-self-end -mt-0.5 text-2xl"
+            className="absolute right-0 top-0 mx-4 -mt-0.5 flex h-full items-center justify-self-end text-2xl"
             type="button"
             onClick={() => setModal(null)}
           >
