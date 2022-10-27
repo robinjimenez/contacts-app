@@ -2,10 +2,10 @@ import * as dotenv from 'dotenv'
 import mongoose, { Types } from 'mongoose'
 import express from 'express'
 import cors from 'cors'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 
 import router from './src/routes'
-import { contactService, userService } from './src/services'
-import { Contact, User as UserType } from './src/types'
+import { userService } from './src/services'
 
 dotenv.config()
 
@@ -21,6 +21,23 @@ app.use(cors(corsSettings))
 app.options('*', cors(corsSettings))
 
 app.use(express.json())
+
+// Simple authentication middleware
+app.use('/api/contacts*', async (req, res, next) => {
+  const { authorization } = req.headers
+
+  if (!authorization) { res.sendStatus(401); return }
+
+  const token = authorization.split(' ')
+  const decodedToken = jwt.verify(token[1], process.env.PRIVATE_KEY || '') as { iss: string }
+  if (!decodedToken) { res.sendStatus(401); return }
+
+  const user = await userService.getUserByUsername(decodedToken.iss)
+  if (!user) { res.sendStatus(401); return }
+  res.locals.user = user
+  next()
+} )
+
 app.use('/api', router)
 
 app.listen(port, () => {
