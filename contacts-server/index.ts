@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv'
 import mongoose, { Types } from 'mongoose'
 import express from 'express'
+import cors from 'cors'
 
 import router from './src/routes'
 import { contactService, userService } from './src/services'
@@ -11,6 +12,7 @@ dotenv.config()
 const port = process.env.PORT || 3001
 const app = express()
 
+app.use(cors({ origin: 'localhost:3000' }))
 app.use(express.json())
 app.use('/api', router)
 
