@@ -71,6 +71,7 @@ const EditableText: FC<Props> = ({
               </label>
             ) : null}
             <input
+              data-testid={name + "Input"}
               type={type}
               id={name}
               required={required}

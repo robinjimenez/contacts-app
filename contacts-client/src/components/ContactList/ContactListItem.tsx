@@ -35,6 +35,7 @@ const ContactListItem: FC<Props> = ({ contact }) => {
     >
       <div className="mr-4 h-10 w-10 overflow-hidden rounded-full bg-gray-200">
         <img
+          data-testid="contact-avatar"
           src="https://www.picsum.photos/100"
           className="object-cover"
           alt="contact avatar"

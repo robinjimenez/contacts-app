@@ -5,7 +5,7 @@ import { persist } from "zustand/middleware"
 import { Contact, ContactMode, Literal, SessionData, ModalData } from "~/types"
 import literals from "../data/literals.json"
 
-interface storeState {
+export interface storeState {
   selectedContact: Contact | null
   selectContact: (id: string) => void
   literals: Record<string, Literal>
