@@ -39,7 +39,7 @@ const ContactCreation: FC = () => {
       contact: formData,
     }
 
-    fetch("/api/contacts", {
+    fetch("http://localhost:3001/api/contacts", {
       method: "POST",
       headers: {
         Accept: "application/json",

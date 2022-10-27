@@ -72,7 +72,7 @@ const ContactDetail: FC = () => {
       updatedContactData: formData,
     }
 
-    fetch("/api/contacts/" + contact._id, {
+    fetch("http://localhost:3001/api/contacts/" + contact._id, {
       method: "PATCH",
       headers: {
         Accept: "application/json",
@@ -107,7 +107,7 @@ const ContactDetail: FC = () => {
         "Are you sure you want to delete this contact? This action is irreversable."
       )
     ) {
-      fetch("/api/contacts/" + contact._id, {
+      fetch("http://localhost:3001/api/contacts/" + contact._id, {
         method: "DELETE",
         headers: {
           Accept: "application/json",
