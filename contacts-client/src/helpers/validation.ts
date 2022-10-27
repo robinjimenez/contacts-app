@@ -27,7 +27,7 @@ const validateForm = (data: Record<string, unknown>) => {
         break
       case "phoneNumber":
         // TODO: validate using external library
-        if (!new RegExp(/[0-9]{3,15}/, "gi").test(value)) {
+        if (!new RegExp(/^[0-9]{3,15}$/, "gi").test(value)) {
           errors.phoneNumber = "INVALID_PHONENUMBER"
         }
         if (!value.length) {
