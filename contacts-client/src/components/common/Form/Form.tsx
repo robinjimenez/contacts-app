@@ -21,7 +21,7 @@ type Props = {
 }
 
 const Form: FC<Props> = ({ children, handleSubmit, isEditing }) => {
-  const [formData, setFormData] = useState<Record<string, unknown>>({})
+  const [formData, setFormData] = useState<Record<string, string>>({})
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState<boolean>(false)
 
   const [initialFormValues, setInitialFormValues] = useState<
@@ -58,15 +58,16 @@ const Form: FC<Props> = ({ children, handleSubmit, isEditing }) => {
     }
 
     // Data submit
-    if (!Object.values(errors).length) handleSubmit(formData)
+    if (!Object.values(errors).length) {
+      handleSubmit(formData)
 
-    // Reset form data
-    setFormData({})
+      // Reset form data
+      setFormData({})
+    }
   }
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     // If value is the same as initial, don't submit as changed data
-
     if (
       Object.values(formData).length &&
       event.currentTarget.value === initialFormValues[event.currentTarget.id]
@@ -76,6 +77,11 @@ const Form: FC<Props> = ({ children, handleSubmit, isEditing }) => {
       setFormData(updatedFormData)
       setHasUnsavedChanges(Object.entries(formData).length > 0)
     } else {
+      const updatedErrors = errors
+      if (updatedErrors) {
+        delete updatedErrors[event.currentTarget.id]
+        setErrors(updatedErrors)
+      }
       setFormData({
         ...formData,
         [event.currentTarget.id]: event.currentTarget.value,

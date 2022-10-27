@@ -1,4 +1,3 @@
-//@ts-nocheck
 import jwt from 'jsonwebtoken'
 import { RequestHandler } from 'express'
 import { contactService, userService } from '../services'

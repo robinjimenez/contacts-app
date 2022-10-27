@@ -1,8 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 
-const validateForm = (data: Record<string, unknown>) => {
-  const errors = {}
+const validateForm = (data: Record<string, string>) => {
+  const errors: Record<string, string> = {}
 
   Object.entries(data).map((field) => {
     const [type, value] = field
