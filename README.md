@@ -13,3 +13,4 @@ A fullstack React/Express/MongoDB app to store your contacts.
 - Create middleware for authentication
 - Data sanitizing to prevent XXSS
 ## Known issues
+- Testing with Zustand: requires specific hook testing library that uses `renderHook` and isn't compatible anymore with React 18 

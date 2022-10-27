@@ -12,7 +12,14 @@ dotenv.config()
 const port = process.env.PORT || 3001
 const app = express()
 
-app.use(cors({ origin: 'localhost:3000' }))
+const corsSettings = {
+  origin: ['http://localhost:3000', 'http://localhost:3000/', 'localhost:3000'],
+  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE"
+}
+
+app.use(cors(corsSettings))
+app.options('*', cors(corsSettings))
+
 app.use(express.json())
 app.use('/api', router)
 
@@ -26,25 +33,7 @@ app.listen(port, () => {
     if (!process.env.DEFAULT_USER_ID) throw Error('Missing default user data')
 
     await mongoose.connect(process.env.MONGODB_URL)
-
-    // For now we're using a single user for all contacts
-    const defaultUser = await userService.getUser(process.env.DEFAULT_USER_ID)
-
-    if (!defaultUser) throw Error('User could not be found.')
-
-    const defaultContact: Contact = {
-      firstName: 'Juan',
-      lastName: 'Do',
-      email: 'test@test.com',
-      creationDate: new Date(),
-      phoneNumber: 123123123,
-      owner: defaultUser._id.toString()
-    }
-
-    // Test calls
-    // userService.registerUser(defaultUser)
-    // contactService.createContact(defaultUser, defaultContact)
-    // setTimeout(() =>  contactService.deleteContact(defaultUser, '123'), 1000)
+    
   } catch (err) {
     console.log('Unable to connect to database: ', err)
   }
