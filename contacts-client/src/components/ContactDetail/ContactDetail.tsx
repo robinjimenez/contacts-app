@@ -1,10 +1,10 @@
 import { ChangeEventHandler, FC, useState } from "react"
 import { useStore } from "../../store"
 import ContactEdits from "../ContactEdits"
-import TextButton from "../common/TextButton/TextButton"
-import EditableText from "../common/EditableText/EditableText"
-import Form from "../common/Form/Form"
-import Button from "../common/Button/Button"
+import TextButton from "../common/TextButton"
+import EditableText from "../common/EditableText"
+import Form from "../common/Form"
+import Button from "../common/Button"
 
 const EmptyContactDetail: FC = () => {
   const { literals, language } = useStore(({ literals, language }) => ({

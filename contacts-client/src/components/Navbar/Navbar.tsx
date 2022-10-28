@@ -1,5 +1,5 @@
 import { useStore } from "../../store"
-import TextButton from "../common/TextButton/TextButton"
+import TextButton from "../common/TextButton"
 
 const Navbar = () => {
   const { selectContact, contactMode, setContactMode } = useStore(

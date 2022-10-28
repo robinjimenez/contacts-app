@@ -1,9 +1,9 @@
 import { ChangeEventHandler, FC } from "react"
 import { useStore } from "../../store"
 
-import EditableText from "../common/EditableText/EditableText"
-import Form from "../common/Form/Form"
-import Button from "../common/Button/Button"
+import EditableText from "../common/EditableText"
+import Form from "../common/Form"
+import Button from "../common/Button"
 
 const ContactCreation: FC = () => {
   const {

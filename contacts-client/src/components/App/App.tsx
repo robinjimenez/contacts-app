@@ -4,7 +4,7 @@ import ContactCreation from "../ContactCreation"
 import ContactDetail from "../ContactDetail"
 import ContactList from "../ContactList"
 import ModalOverlay from "../ModalOverlay"
-import Navbar from "../Navbar/Navbar"
+import Navbar from "../Navbar"
 
 const App: FC = () => {
   const { setLiterals, fetchContacts, contactMode, setSessionData } = useStore(
@@ -19,7 +19,7 @@ const App: FC = () => {
   )
 
   useEffect(() => {
-    ;(async () => {
+    (async () => {
       // Fetch literals
       await setLiterals()
 
